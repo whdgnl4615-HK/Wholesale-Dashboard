@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wholesale Buyer Analytics 2021–2025</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F3;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.08);
+    --text-primary: #1A1A1A;
+    --text-secondary: #6B6B6B;
+    --text-tertiary: #9E9E9E;
+    --big: #534AB7;
+    --big-light: #EEEDFE;
+    --mid: #1D9E75;
+    --mid-light: #E1F5EE;
+    --small: #D85A30;
+    --small-light: #FAECE7;
+    --grid: rgba(0,0,0,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 32px 24px 60px;
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+  .page-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  .scorecard-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .scorecard {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+  }
+  .scorecard .sc-label { font-size: 11px; color: var(--text-tertiary); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 8px; }
+  .scorecard .sc-val { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; }
+  .scorecard .sc-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  .sc-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 6px; border-radius: 6px; margin-left: 4px; vertical-align: middle; flex-shrink: 0; }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-full { grid-column: 1 / -1; }
+
+  .chart-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 20px 22px 18px;
+  }
+  .chart-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .chart-desc { font-size: 11px; color: var(--text-tertiary); margin-bottom: 16px; }
+  .canvas-wrap { position: relative; width: 100%; }
+
+  .insight-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .insight-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+  }
+  .insight-tag {
+    font-size: 10px; font-weight: 600; padding: 3px 8px;
+    border-radius: 6px; display: inline-block; margin-bottom: 10px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .insight-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  .section-divider {
+    font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 28px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .footer { font-size: 11px; color: var(--text-tertiary); margin-top: 32px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    .insight-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .scorecard-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .page-header { flex-direction: column; align-items: flex-start; }
+    .legend { gap: 10px; }
+    body { padding: 20px 14px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Wholesale Buyer Analytics</div>
+    <div class="page-sub">2021 – 2025 · Apparel · Tier별 구매 트렌드</div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:var(--big)"></span>Big Buyer (연평균 $100K+)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--mid)"></span>Mid Buyer (연평균 $10K~$100K)</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--small)"></span>Small Buyer (연평균 $10K 미만)</div>
+  </div>
+</div>
+
+<!-- Scorecards -->
+<div class="scorecard-row">
+  <div class="scorecard">
+    <div class="sc-label">전체 누적 매출 (5년)</div>
+    <div class="sc-val">$5.6B</div>
+    <div class="sc-sub">2021~2025 합산</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Big Buyer 매출 비중</div>
+    <div class="sc-val" style="color:var(--big)">~60%<span class="sc-badge" style="background:var(--big-light);color:var(--big)">↑ 집중</span></div>
+    <div class="sc-sub">연평균 $100K+ · 802명 (2025)</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Small Buyer 고객 수 변화</div>
+    <div class="sc-val" style="color:var(--small)">-16%<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓ 감소</span></div>
+    <div class="sc-sub">131,201명 → 110,903명</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Mid Buyer 주문 빈도 변화</div>
+    <div class="sc-val" style="color:var(--mid)">36→34<span class="sc-badge" style="background:var(--mid-light);color:var(--mid)">→ 안정</span></div>
+    <div class="sc-sub">연 34~36회 안정적 유지</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Big vs Small 지출 격차</div>
+    <div class="sc-val">315x</div>
+    <div class="sc-sub">$0.70M vs $2,227 (2025)</div>
+  </div>
+</div>
+
+<!-- Section 1: Revenue -->
+<div class="section-divider">매출 트렌드</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">연도별 Tier 매출 비중 (%)</div>
+    <div class="chart-desc">Big Buyer가 전체 매출의 약 94%를 차지하며 비중이 지속 확대 중</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-share"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">절대 매출 ($M)</div>
+    <div class="chart-desc">Big Buyer 매출 성장세 vs Mid/Small 정체</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-revenue"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">고객당 평균 연간 지출액 ($)</div>
+    <div class="chart-desc">Big vs Small 격차 확대 추세</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-spend"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 2: Customers -->
+<div class="section-divider">고객 건강도</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">활성 고객 수</div>
+    <div class="chart-desc">Small Buyer 고객 수 5년간 -15% 감소</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-customers"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">신규 고객 수</div>
+    <div class="chart-desc">Small 신규 유입 2021년 68K → 2025년 35K로 절반</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-new"></canvas></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">연간 주문 빈도 (회/고객)</div>
+    <div class="chart-desc">Mid Buyer 2022년 급락 후 부분 회복 중</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-freq"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 3: Order Behavior -->
+<div class="section-divider">주문 행동</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">평균 주문액 AOV ($)</div>
+    <div class="chart-desc">Small AOV 꾸준히 상승 — 덜 사지만 살 때 더 쓰는 패턴</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">총 주문 건수</div>
+    <div class="chart-desc">Small Buyer 주문 건수 최다 — 단, 소액 주문 · Big Buyer는 건수 적지만 고단가(AOV $1,200+)로 매출 압도</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-orders"></canvas></div>
+  </div>
+</div>
+
+<!-- Insights -->
+<div class="section-divider">핵심 인사이트</div>
+
+<div class="insight-row">
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Big Buyer</div>
+    <p>매출의 94%를 차지하며 비중이 매년 확대 중. 고객당 연간 $34K 지출로 충성도 높음. 2025년 소폭 매출 감소(-5.5%)는 모니터링 필요.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Mid Buyer</div>
+    <p>2022년 주문 빈도 급락(6.3→4.9회) 이후 부분 회복 중. 고객 수는 안정적이나 1인당 지출이 정체. 2025년 회복 신호($2,307) 주목.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Small Buyer</div>
+    <p>고객 수 -36%, 신규 유입 -50% — 명확한 시장 축소. 그러나 생존한 고객의 AOV($229→$264)와 1인당 지출은 상승 중. 이탈 방지가 핵심 과제.</p>
+  </div>
+</div>
+
+<div class="footer">데이터 기준: 2021.01.01 ~ 2025.12.31 · quick-woodland-463404-n5.nvlt.INVOICE</div>
+
+<!-- Section 4: Concentration -->
+<div class="section-divider">매출 집중도 (전체 고객 기준)</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">매출 집중도 — Top 1% / Top 1~10% / Top 10~50% / Bottom 50% (%)</div>
+    <div class="chart-desc">상위 1% 고객이 전체 매출의 55~57% 차지 · 상위 10%가 81~83% 담당 — 극단적 집중 구조</div>
+    <div class="canvas-wrap" style="height:240px"><canvas id="c-concentration"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 5: New vs Retained Revenue -->
+<div class="section-divider">신규 vs 유지 고객 매출 비율</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">Big Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 비중 100% → 2.3%로 감소 — 기존 고객 의존도 심화</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-big"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Mid Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 비중 꾸준히 감소 — 유지 고객 매출 비중 증가 중</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-mid"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Small Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 비중이 여전히 70%+ — 유지율이 매우 낮음</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-small"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 6: Seasonality -->
+<div class="section-divider">분기별 계절성</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">분기별 매출 ($M) — Tier별</div>
+    <div class="chart-desc">Q3가 전반적으로 가장 강하고 Q4는 Big Buyer 중심으로 하락하는 패턴</div>
+    <div class="canvas-wrap" style="height:260px"><canvas id="c-seasonal"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">분기별 Big Buyer AOV ($)</div>
+    <div class="chart-desc">Q1이 가장 높고 Q2가 가장 낮은 일관된 패턴</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov-seasonal"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">분기별 활성 고객 수 — Small Buyer</div>
+    <div class="chart-desc">Small Buyer Q1~Q3 감소 추세 뚜렷, 매년 반복</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-small-seasonal"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Churn -->
+<div class="section-divider">이탈률 (Churn Rate)</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">연도별 Tier별 이탈률 (%)</div>
+    <div class="chart-desc">Small Buyer 이탈률 50%+ 고착 — 10명 중 5명이 다음 해 구매 안 함. Big 이탈률도 상승 추세</div>
+    <div class="canvas-wrap" style="height:240px"><canvas id="c-churn-rate"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">이탈 고객 수 (절대값)</div>
+    <div class="chart-desc">Small Buyer 이탈 절대 수가 압도적 — 연 6~7만명 수준</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-abs"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Big Buyer 이탈률 추이 (%)</div>
+    <div class="chart-desc">3.3% → 8.1% → 5.8% → 7.2% — 등락 있지만 전반적 상승 추세</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-big"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Tier 이동 분석 -->
+<div class="section-divider">5년 고정 Tier vs 실제 구매 행동</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;">
+  <div class="chart-card" style="border-left:3px solid var(--big);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--big);margin-bottom:8px;">Big Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $100K+ 기준 Big 1,171명 중 <strong style="color:var(--text-primary);">68.8%가 매년 구매 규모가 달라집니다.</strong>
+      어떤 해엔 $100K 이상, 다른 해엔 $10K~$100K 수준으로 출렁이는 패턴입니다.
+      단, 매출 기준으로는 Big처럼 구매한 고객이 전체의 76~79%를 담당 — 매출 분석의 신뢰도는 유지됩니다.
+    </p>
+  </div>
+  <div class="chart-card" style="border-left:3px solid var(--mid);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--mid);margin-bottom:8px;">Mid Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $10K~$100K 기준 Mid 16,506명 중 <strong style="color:var(--text-primary);">82.4%가 연도별 변동 있음.</strong>
+      매년 $10K를 꾸준히 채우는 안정적 Mid는 약 2,905명 수준입니다.
+      나머지는 좋은 해와 나쁜 해가 교차하는 패턴으로, Big 잠재군과 Small 위험군이 혼재합니다.
+    </p>
+  </div>
+  <div class="chart-card" style="border-left:3px solid var(--small);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--small);margin-bottom:8px;">Small Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $10K 미만 Small 337,010명 중 <strong style="color:var(--text-primary);">93.2%가 연도별 변동 있음.</strong>
+      5년 내내 Small로 고정된 고객은 22,825명(6.8%)에 불과합니다.
+      대부분은 구매한 해와 구매하지 않은 해가 반복되는 비정기 구매 패턴입니다.
+    </p>
+  </div>
+</div>
+
+<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px 18px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary);line-height:1.7;">
+  <strong style="color:var(--color-text-primary);">분석 신뢰도 노트</strong> — 연도별 구매 변동은 "데이터 오류"가 아니라 실제 마켓의 특성입니다. 리테일러들은 시즌, 재고 상황, 트렌드에 따라 구매 규모가 매년 달라지는 것이 일반적입니다. 본 대시보드의 Tier는 5년 연평균 기준으로 고정되어 있어 트렌드 비교에는 일관성을 유지하지만, 특정 연도의 개별 고객 행동 분석에는 연도별 실제 구매액을 함께 참고하는 것을 권장합니다.
+</div>
+
+<!-- Section: Big→Small 심층 분석 -->
+<div class="section-divider">Big Buyer 이탈 심층 분석</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">Big→Small 이탈 시점 분포</div>
+    <div class="chart-desc">매년 이탈 고객 수 증가 — 2025년 160명으로 최고치</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-drop-timing"></canvas></div>
+  </div>
+
+</div>
+
+<!-- Updated Insights -->
+<div class="section-divider">핵심 인사이트</div>
+
+<div class="insight-row">
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Big Buyer</div>
+    <p>연평균 $100K+ 구매 고객 972명이 전체 매출의 60% 담당. 고객당 연평균 $1.93M 지출. 신규 유입 사실상 없음(28명/년) — 기존 고객 유지가 전부. 이탈률 5~7%대로 관리 필요.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Mid Buyer</div>
+    <p>연평균 $10K~$100K 구매 12,938명이 매출의 27% 담당. 주문빈도 34~36회로 안정적. 유지 고객 매출 95%로 충성도 높음. Big으로 성장 가능성 있는 핵심 육성 그룹.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Small Buyer</div>
+    <p>연평균 $10K 미만 108,942명이 매출의 14% 담당. 이탈률 50%+로 매년 절반이 이탈. Small AOV($355→$402) 꾸준히 상승 중. 유지 고객 매출 비중 81%로 개선 추세.</p>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Tier 분류 기준</div>
+      <div class="page-sub">Big / Mid / Small Buyer 정의 및 분류 방법론</div>
+    </div>
+  </div>
+
+  <div class="section-divider">분류 방법론</div>
+
+  <div style="margin-bottom:20px;">
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:10px;">어떻게 나눴나요?</div>
+      <p style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+        2021~2025년 전체 기간의 <strong style="color:var(--text-primary);">연간 평균 구매금액(Average Annual Spend)</strong>을 기준으로 3개 그룹으로 분류했습니다.
+        단순 누적 금액이 아닌 연평균을 쓴 이유는, 특정 연도에만 일시적으로 많이 산 고객이 Big으로 잘못 분류되는 것을 방지하기 위해서입니다.
+        <strong style="color:var(--text-primary);">한 번 정해진 tier는 5년 내내 고정</strong>되는 구조입니다.
+      </p>
+      <div style="background:var(--bg);border-radius:8px;padding:14px 16px;margin-top:14px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary);line-height:1.9;">
+        avg_annual_spend = SUM(total) / COUNT(DISTINCT YEAR)<br><br>
+        CASE<br>
+        &nbsp;&nbsp;WHEN avg_annual_spend &gt;= 100000 THEN <span style="color:var(--big);">'Big Buyer'</span>&nbsp;&nbsp;-- 연평균 $100K 이상<br>
+        &nbsp;&nbsp;WHEN avg_annual_spend &gt;= 10000  THEN <span style="color:var(--mid);">'Mid Buyer'</span>&nbsp;&nbsp;-- 연평균 $10K~$100K<br>
+        &nbsp;&nbsp;ELSE <span style="color:var(--small);">'Small Buyer'</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- 연평균 $10K 미만<br>
+        END
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">Tier별 정의 및 실제 수치</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:20px;">
+
+    <div class="chart-card" style="border-top:3px solid var(--big);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:var(--big-light);display:flex;align-items:center;justify-content:center;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--big);"></div>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--big);">Big Buyer</div>
+          <div style="font-size:11px;color:var(--text-tertiary);">연평균 $100K 이상</div>
+        </div>
+      </div>
+      <table style="width:100%;font-size:12px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">1,006명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--big);">~61%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$2,022,962</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">508.1회/년</td></tr>
+        <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$1,218</td></tr>
+      </table>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--big-light);border-radius:8px;font-size:11px;color:var(--big);line-height:1.6;">
+        연평균 $100K+ 꾸준히 구매하는 진짜 대형 리테일러. 연 508회 주문, 고객당 $2M 지출. 신규 유입 거의 없어 기존 고객 유지가 전부 — 이탈 1명당 매출 영향이 매우 큼.
+      </div>
+    </div>
+
+    <div class="chart-card" style="border-top:3px solid var(--mid);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:var(--mid-light);display:flex;align-items:center;justify-content:center;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--mid);"></div>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--mid);">Mid Buyer</div>
+          <div style="font-size:11px;color:var(--text-tertiary);">연평균 $10K~$100K</div>
+        </div>
+      </div>
+      <table style="width:100%;font-size:12px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">13,159명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--mid);">~26%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$65,259</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">35.2회/년</td></tr>
+        <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$704</td></tr>
+      </table>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--mid-light);border-radius:8px;font-size:11px;color:var(--mid);line-height:1.6;">
+        연평균 $10K~$100K 구매하는 중형 리테일러. 연 35회 주문으로 안정적. 유지 고객 매출 95%로 충성도 높음. Big으로 성장 가능성 있는 핵심 육성 그룹.
+      </div>
+    </div>
+
+    <div class="chart-card" style="border-top:3px solid var(--small);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:8px;background:var(--small-light);display:flex;align-items:center;justify-content:center;">
+          <div style="width:14px;height:14px;border-radius:3px;background:var(--small);"></div>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--small);">Small Buyer</div>
+          <div style="font-size:11px;color:var(--text-tertiary);">연평균 $10K 미만</div>
+        </div>
+      </div>
+      <table style="width:100%;font-size:12px;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">120,647명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--small);">~13%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$3,744</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">4.8회/년</td></tr>
+        <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$392</td></tr>
+      </table>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--small-light);border-radius:8px;font-size:11px;color:var(--small);line-height:1.6;">
+        연평균 $10K 미만 구매하는 소형 리테일러 및 부티크. 이탈률 50%+로 매년 절반 이탈. 유지 고객 매출 비중 81%로 개선 추세. AOV($355→$402) 꾸준히 상승 중.
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">이 방식을 선택한 이유</div>
+
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-tag" style="background:#F1EFE8;color:#5F5E5A;">Lifetime 기준</div>
+      <p>특정 연도에 일시적으로 많이 산 고객이 Big으로 잘못 분류되는 오류를 방지하기 위해서 단일 연도 구매액이 아닌 5년 누적 기준으로 tier를 정했습니다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-tag" style="background:#F1EFE8;color:#5F5E5A;">고정 Tier</div>
+      <p>매년 tier가 바뀌면 "Big이 줄었다"가 실제 이탈인지 tier 이동인지 구분이 힘들기 때문에 tier는 5년간 고정됩니다.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-tag" style="background:#F1EFE8;color:#5F5E5A;">연간 평균 기준</div>
+      <p>5년 누적이 아닌 연간 평균 구매액으로 Tier를 정했습니다. 특정 연도에만 반짝 크게 산 고객이 Big으로 잘못 분류되는 오류를 방지하고, 실제 구매 행동을 더 정확하게 반영합니다.</p>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:32px;">데이터 기준: 2021.01.01 ~ 2025.12.31 · quick-woodland-463404-n5.nvlt.INVOICE</div>
+</div>
+
+<script>
+const years = ['2021','2022','2023','2024','2025'];
+const BIG = '#534AB7', MID = '#1D9E75', SML = '#D85A30';
+const GRID = 'rgba(0,0,0,0.06)', TICK = '#999';
+
+const data = {
+  revenue:   { Big:[510.1, 529.5, 564.5, 605.4, 562.2], Mid:[282.9, 309.4, 316.0, 325.9, 323.1], Small:[235.0, 247.0, 250.7, 250.4, 247.0] },
+  share:     { Big:[49.6, 48.8, 49.9, 51.2, 49.7], Mid:[27.5, 28.5, 27.9, 27.6, 28.5], Small:[22.9, 22.7, 22.2, 21.2, 21.8] },
+  spend:     { Big:[640025, 632616, 664900, 722434, 700998], Mid:[27735, 28464, 27864, 28251, 28978], Small:[1791, 1921, 1981, 2045, 2227] },
+  customers: { Big:[797, 837, 849, 838, 802], Mid:[10200, 10870, 11341, 11536, 11150], Small:[131201, 128568, 126583, 122441, 110903] },
+  newc:      { Big:[139, 66, 80, 38, 24], Mid:[3206, 1469, 1353, 1155, 805], Small:[89660, 67433, 62815, 58463, 49414] },
+  retained:  { Big:[0, 771, 769, 800, 778], Mid:[0, 9401, 9988, 10381, 10345], Small:[0, 61135, 63768, 63978, 61489] },
+  freq:      { Big:[454.4, 531.7, 574.9, 585.7, 530.6], Mid:[40.3, 37.4, 38.1, 38.8, 38.7], Small:[5.0, 4.7, 4.9, 5.1, 5.4] },
+  aov:       { Big:[1409, 1190, 1156, 1233, 1321], Mid:[687, 762, 731, 728, 749], Small:[361, 407, 403, 399, 411] },
+  orders:    { Big:[362168, 444998, 488120, 490788, 425548], Mid:[411482, 406006, 432224, 447411, 431571], Small:[650675, 607307, 621726, 626955, 601438] },
+};
+
+function mkDatasets(key, type) {
+  const d = data[key];
+  const isBar = type === 'bar';
+  return [
+    { label:'Big Buyer', data:d.Big, borderColor:BIG, backgroundColor: isBar ? BIG : 'rgba(83,74,183,0.08)', pointBackgroundColor:BIG, borderWidth:2, pointRadius:4, tension:0.35, fill:false, borderRadius:3, stack: isBar?'s':undefined },
+    { label:'Mid Buyer', data:d.Mid, borderColor:MID, backgroundColor: isBar ? MID : 'rgba(29,158,117,0.08)', pointBackgroundColor:MID, borderWidth:2, pointRadius:4, tension:0.35, fill:false, borderRadius:3, stack: isBar?'s':undefined },
+    { label:'Small Buyer', data:d.Small, borderColor:SML, backgroundColor: isBar ? SML : 'rgba(216,90,48,0.08)', pointBackgroundColor:SML, borderWidth:2, pointRadius:4, tension:0.35, fill:false, borderDash:[4,3], borderRadius:3, stack: isBar?'s':undefined },
+  ];
+}
+
+function opts(yFmt, stacked) {
+  return {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ` ${c.dataset.label}: ${yFmt(c.parsed.y)}` } } },
+    scales:{
+      x:{ stacked:!!stacked, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},autoSkip:false} },
+      y:{ stacked:!!stacked, grid:{color:GRID}, ticks:{color:TICK,font:{size:11}, callback:yFmt} }
+    }
+  };
+}
+
+new Chart('c-share', { type:'bar', data:{labels:years, datasets:mkDatasets('share','bar')}, options:opts(v=>v.toFixed(1)+'%', true) });
+new Chart('c-revenue', { type:'line', data:{labels:years, datasets:mkDatasets('revenue','line')}, options:opts(v=>'$'+v+'M') });
+new Chart('c-spend', { type:'line', data:{labels:years, datasets:mkDatasets('spend','line')}, options:opts(v=>'$'+v.toLocaleString()) });
+new Chart('c-customers', { type:'line', data:{labels:years, datasets:mkDatasets('customers','line')}, options:opts(v=>(v/1000).toFixed(0)+'K') });
+new Chart('c-new', { type:'bar', data:{labels:years, datasets:mkDatasets('newc','bar')}, options:opts(v=>(v/1000).toFixed(0)+'K') });
+
+new Chart('c-freq', { type:'line', data:{labels:years, datasets:mkDatasets('freq','line')}, options:opts(v=>v.toFixed(1)+'회') });
+new Chart('c-aov', { type:'line', data:{labels:years, datasets:mkDatasets('aov','line')}, options:opts(v=>'$'+v) });
+new Chart('c-orders', {
+  type:'bar',
+  data:{ labels:years, datasets:[
+    { label:'Big Buyer',   data:data.orders.Big,   backgroundColor:BIG, borderRadius:3 },
+    { label:'Mid Buyer',   data:data.orders.Mid,   backgroundColor:MID, borderRadius:3 },
+    { label:'Small Buyer', data:data.orders.Small, backgroundColor:SML, borderRadius:3 },
+  ]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: c => ` ${c.dataset.label}: ${(c.parsed.y/1000).toFixed(0)}K` } } },
+    scales:{
+      x:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:11},autoSkip:false} },
+      y:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>(v/1000).toFixed(0)+'K'} }
+    }
+  }
+});
+
+// === 집중도 차트 ===
+const TOP1 = '#26215C', TOP10 = '#7F77DD';
+new Chart('c-concentration', {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label:'Top 1%',       data:[57.3,55.4,55.8,56.8,55.3], backgroundColor:TOP1,  borderRadius:3, stack:'s' },
+      { label:'Top 1~10%',   data:[25.8,26.3,25.7,25.0,25.8], backgroundColor:TOP10, borderRadius:3, stack:'s' },
+      { label:'Top 10~50%',  data:[14.8,15.9,16.1,15.8,16.4], backgroundColor:MID,   borderRadius:3, stack:'s' },
+      { label:'Bottom 50%',  data:[2.2,2.4,2.5,2.4,2.6],      backgroundColor:SML,   borderRadius:3, stack:'s' },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{display:true, position:'top', labels:{boxWidth:12,font:{size:11},color:TICK}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}}
+    },
+    scales:{
+      x:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},autoSkip:false}},
+      y:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>v+'%'}, max:100}
+    }
+  }
+});
+
+// === 신규 vs 유지 매출 ===
+const revYears = ['2022','2023','2024','2025'];
+function revChart(id, newPct, retPct) {
+  new Chart(id, {
+    type:'bar',
+    data:{
+      labels: revYears,
+      datasets:[
+        { label:'유지 고객 매출', data:retPct, backgroundColor:'#534AB7', borderRadius:3, stack:'s' },
+        { label:'신규 고객 매출', data:newPct,  backgroundColor:'#AFA9EC', borderRadius:3, stack:'s' },
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true, position:'top', labels:{boxWidth:12,font:{size:11},color:TICK}},
+        tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}}
+      },
+      scales:{
+        x:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},autoSkip:false}},
+        y:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>v+'%'}, max:100}
+      }
+    }
+  });
+}
+revChart('c-rev-big',   [7.9, 9.4, 4.5, 3.0], [92.1, 90.6, 95.5, 97.0]);
+revChart('c-rev-mid',   [13.5, 11.9, 10.0, 7.2], [86.5, 88.1, 90.0, 92.8]);
+revChart('c-rev-small', [52.4, 49.6, 47.7, 44.6], [47.6, 50.4, 52.3, 55.4]);
+
+// === 이탈률 차트 ===
+const churnYears = ['2021','2022','2023','2024'];
+new Chart('c-churn-rate', {
+  type: 'line',
+  data: {
+    labels: churnYears,
+    datasets: [
+      { label:'Big Buyer',   data:[3.3,8.1,5.8,7.2], borderColor:BIG, backgroundColor:'rgba(83,74,183,0.08)', pointBackgroundColor:BIG, pointRadius:5, borderWidth:2.5, tension:0.35, fill:false },
+      { label:'Mid Buyer',   data:[7.8,8.1,8.5,10.3], borderColor:MID, backgroundColor:'rgba(29,158,117,0.08)', pointBackgroundColor:MID, pointRadius:5, borderWidth:2.5, tension:0.35, fill:false },
+      { label:'Small Buyer', data:[53.4,50.4,49.5,49.8], borderColor:SML, backgroundColor:'rgba(216,90,48,0.08)', pointBackgroundColor:SML, pointRadius:5, borderWidth:2.5, tension:0.35, fill:false, borderDash:[4,3] },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}} },
+    scales:{
+      x:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},autoSkip:false} },
+      y:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},callback:v=>v+'%'}, min:0, max:100 }
+    }
+  }
+});
+
+new Chart('c-churn-abs', {
+  type: 'bar',
+  data: {
+    labels: churnYears,
+    datasets: [
+      { label:'Big Buyer',   data:[26,68,49,60],        backgroundColor:BIG, borderRadius:3 },
+      { label:'Mid Buyer',   data:[799,882,960,1191],    backgroundColor:MID, borderRadius:3 },
+      { label:'Small Buyer', data:[70066,64800,62605,60952], backgroundColor:SML, borderRadius:3 },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}명`}} },
+    scales:{
+      x:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},autoSkip:false} },
+      y:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},callback:v=>(v/1000).toFixed(0)+'K'} }
+    }
+  }
+});
+
+new Chart('c-churn-big', {
+  type: 'bar',
+  data: {
+    labels: churnYears,
+    datasets: [
+      { label:'Big Buyer 이탈률', data:[3.3,8.1,5.8,7.2], backgroundColor:['#AFA9EC','#7F77DD','#534AB7','#3C3489'], borderRadius:3 },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` 이탈률: ${c.parsed.y.toFixed(1)}%`}} },
+    scales:{
+      x:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},autoSkip:false} },
+      y:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},callback:v=>v+'%'}, min:0, max:10 }
+    }
+  }
+});
+
+// === Big→Small 이탈 시점 ===
+new Chart('c-drop-timing', {
+  type: 'bar',
+  data: {
+    labels: ['2022','2023','2024','2025'],
+    datasets: [{
+      label: 'Big→Small 이탈 고객 수',
+      data: [118, 98, 119, 160],
+      backgroundColor: ['#AFA9EC','#7F77DD','#534AB7','#3C3489'],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y.toLocaleString()}명`}} },
+    scales:{
+      x:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},autoSkip:false} },
+      y:{ grid:{color:GRID}, ticks:{color:TICK,font:{size:12},callback:v=>v+'명'}, min:0 }
+    }
+  }
+});
+
+
+
+const qLabels = ['21Q1','21Q2','21Q3','21Q4','22Q1','22Q2','22Q3','22Q4','23Q1','23Q2','23Q3','23Q4','24Q1','24Q2','24Q3','24Q4','25Q1','25Q2','25Q3','25Q4'];
+const bigRev  = [113.3, 133.4, 147.3, 116.1, 150.4, 142.4, 130.3, 106.3, 131.1, 137.8, 162.5, 133.2, 166.1, 156.3, 159.1, 123.8, 155.1, 140.3, 135.7, 131.1];
+const midRev  = [56.2, 74.7, 83.3, 68.8, 83.6, 80.8, 80.1, 64.9, 81.0, 78.9, 85.5, 70.6, 87.8, 85.0, 85.3, 67.8, 87.5, 83.4, 83.2, 69.0];
+const smlRev  = [48.0, 58.2, 67.0, 61.8, 63.5, 63.3, 66.0, 54.3, 61.6, 60.7, 67.6, 60.8, 67.7, 63.4, 64.0, 55.2, 61.5, 60.8, 63.3, 61.4];
+new Chart('c-seasonal', {
+  type:'line',
+  data:{
+    labels:qLabels,
+    datasets:[
+      {label:'Big Buyer', data:bigRev, borderColor:BIG, backgroundColor:'rgba(83,74,183,0.06)', pointRadius:3, borderWidth:2, tension:0.3, fill:false},
+      {label:'Mid Buyer', data:midRev, borderColor:MID, backgroundColor:'rgba(29,158,117,0.06)', pointRadius:3, borderWidth:2, tension:0.3, fill:false},
+      {label:'Small Buyer', data:smlRev, borderColor:SML, borderDash:[4,3], pointRadius:3, borderWidth:2, tension:0.3, fill:false},
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y}M`}}},
+    scales:{
+      x:{grid:{color:GRID}, ticks:{color:TICK,font:{size:10},maxRotation:45}},
+      y:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>'$'+v+'M'}}
+    }
+  }
+});
+
+const bigAOV = [1590,1319,1495,1102,1222,1165,1260,1077,1089,1148,1301,1044,1233,1075,1393,1210,1320,1259,1283,1251];
+new Chart('c-aov-seasonal', {
+  type:'line',
+  data:{labels:qLabels, datasets:[{label:'Big AOV', data:bigAOV, borderColor:BIG, pointRadius:3, borderWidth:2, tension:0.3, fill:false, backgroundColor:'rgba(83,74,183,0.06)'}]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>` $${c.parsed.y}`}}},
+    scales:{
+      x:{grid:{color:GRID}, ticks:{color:TICK,font:{size:10},maxRotation:45}},
+      y:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>'$'+v}}
+    }
+  }
+});
+
+const smallCust = [53128,59563,62835,59732,58528,60847,58642,55063,57396,57197,59567,58165,59388,58997,55816,53612,52230,53074,50944,52410];
+new Chart('c-small-seasonal', {
+  type:'line',
+  data:{labels:qLabels, datasets:[{label:'Small 활성 고객', data:smallCust, borderColor:SML, borderDash:[4,3], pointRadius:3, borderWidth:2, tension:0.3, fill:false, backgroundColor:'rgba(216,90,48,0.06)'}]},
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y.toLocaleString()}명`}}},
+    scales:{
+      x:{grid:{color:GRID}, ticks:{color:TICK,font:{size:10},maxRotation:45}},
+      y:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>(v/1000).toFixed(0)+'K'}}
+    }
+  }
+});
+</script>
+
+<!-- PAGE 3: Tier 기준 시뮬레이터 -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Tier 기준 시뮬레이터</div>
+      <div class="page-sub">Big Buyer 기준금액을 바꿔가며 고객 수 · 매출 · 비중 변화를 실시간으로 확인 · 실제 BigQuery 데이터 기반</div>
+    </div>
+  </div>
+
+  <!-- 컨트롤러 -->
+  <div class="chart-card" style="margin-bottom:20px;">
+    <div style="display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;">
+      <div>
+        <div style="margin-bottom:6px;font-size:12px;color:var(--text-secondary);">Big Buyer 기준 선택 (연평균 구매금액)</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="sim-btns">
+          <button onclick="setSim(100000)"  id="sbtn-100k"  class="sim-btn active">$100K</button>
+          <button onclick="setSim(200000)"  id="sbtn-200k"  class="sim-btn">$200K</button>
+          <button onclick="setSim(300000)"  id="sbtn-300k"  class="sim-btn">$300K</button>
+          <button onclick="setSim(500000)"  id="sbtn-500k"  class="sim-btn">$500K</button>
+          <button onclick="setSim(1000000)" id="sbtn-1000k" class="sim-btn">$1M</button>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text-tertiary);">Mid Buyer 하한 = $10K 고정 · Small Buyer = $10K 미만</div>
+      </div>
+      <div>
+        <div style="margin-bottom:6px;font-size:12px;color:var(--text-secondary);">Scorecard 기준 연도</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="sim-yr-btns">
+          <button onclick="setSimYear(0)" id="sybtn-0" class="sim-btn">2021</button>
+          <button onclick="setSimYear(1)" id="sybtn-1" class="sim-btn">2022</button>
+          <button onclick="setSimYear(2)" id="sybtn-2" class="sim-btn">2023</button>
+          <button onclick="setSimYear(3)" id="sybtn-3" class="sim-btn active">2024</button>
+          <button onclick="setSimYear(4)" id="sybtn-4" class="sim-btn">2025</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 현재 선택 표시 -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+    <div style="font-size:13px;color:var(--text-secondary);">현재 기준:</div>
+    <div style="font-size:15px;font-weight:600;color:var(--big);" id="sim-label-big">Big = $100K+</div>
+    <div style="color:var(--text-tertiary);">·</div>
+    <div style="font-size:15px;font-weight:600;color:var(--mid);" id="sim-label-mid">Mid = $10K~$100K</div>
+    <div style="color:var(--text-tertiary);">·</div>
+    <div style="font-size:15px;font-weight:600;color:var(--small);" id="sim-label-sml">Small = ~$10K</div>
+  </div>
+
+  <!-- Scorecard -->
+  <div style="display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:12px;margin-bottom:20px;">
+    <div class="chart-card" style="border-left:3px solid var(--big);">
+      <div style="font-size:10px;color:var(--big);font-weight:600;letter-spacing:0.5px;margin-bottom:10px;" id="sim-big-label">BIG BUYER · 2024</div>
+      <div style="font-size:28px;font-weight:700;" id="sim-big-cust">1,006명</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px;">
+        <div style="font-size:22px;font-weight:600;color:var(--big);" id="sim-big-pct">60.8%</div>
+        <div style="font-size:12px;color:var(--text-secondary);">매출 비중</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;" id="sim-big-rev">$2,034M</div>
+    </div>
+    <div class="chart-card" style="border-left:3px solid var(--mid);">
+      <div style="font-size:10px;color:var(--mid);font-weight:600;letter-spacing:0.5px;margin-bottom:10px;" id="sim-mid-label">MID BUYER · 2024</div>
+      <div style="font-size:28px;font-weight:700;" id="sim-mid-cust">13,159명</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px;">
+        <div style="font-size:22px;font-weight:600;color:var(--mid);" id="sim-mid-pct">25.7%</div>
+        <div style="font-size:12px;color:var(--text-secondary);">매출 비중</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;" id="sim-mid-rev">$859M</div>
+    </div>
+    <div class="chart-card" style="border-left:3px solid var(--small);">
+      <div style="font-size:10px;color:var(--small);font-weight:600;letter-spacing:0.5px;margin-bottom:10px;" id="sim-sml-label">SMALL BUYER · 2024</div>
+      <div style="font-size:28px;font-weight:700;" id="sim-sml-cust">120,647명</div>
+      <div style="display:flex;align-items:baseline;gap:8px;margin-top:6px;">
+        <div style="font-size:22px;font-weight:600;color:var(--small);" id="sim-sml-pct">13.5%</div>
+        <div style="font-size:12px;color:var(--text-secondary);">매출 비중</div>
+      </div>
+      <div style="font-size:12px;color:var(--text-tertiary);margin-top:4px;" id="sim-sml-rev">$452M</div>
+    </div>
+  </div>
+
+  <!-- 차트 -->
+  <div class="charts-grid" style="margin-bottom:20px;">
+    <div class="chart-card chart-full">
+      <div class="chart-title">연도별 매출 비중 변화 (%)</div>
+      <div class="chart-desc" id="sim-chart-desc">Big $100K+ 기준 · 5년간 매출 비중 추이</div>
+      <div class="canvas-wrap" style="height:260px"><canvas id="sim-chart-share"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">연도별 Big Buyer 고객 수</div>
+      <div class="canvas-wrap" style="height:220px"><canvas id="sim-chart-cust"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">연도별 Big Buyer 매출 ($M)</div>
+      <div class="canvas-wrap" style="height:220px"><canvas id="sim-chart-rev"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 연도별 상세 테이블 -->
+  <div class="chart-card" style="padding:0;overflow:hidden;">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead>
+        <tr style="border-bottom:1.5px solid var(--border);background:var(--bg);">
+          <th style="padding:12px 16px;text-align:left;font-size:11px;color:var(--text-secondary);font-weight:500;">연도</th>
+          <th colspan="3" style="padding:12px 16px;text-align:center;font-size:11px;color:var(--big);font-weight:600;border-left:2px solid var(--big-light);">Big Buyer</th>
+          <th colspan="3" style="padding:12px 16px;text-align:center;font-size:11px;color:var(--mid);font-weight:600;border-left:2px solid var(--mid-light);">Mid Buyer</th>
+          <th colspan="3" style="padding:12px 16px;text-align:center;font-size:11px;color:var(--small);font-weight:600;border-left:2px solid var(--small-light);">Small Buyer</th>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);background:var(--bg);">
+          <th style="padding:8px 16px;"></th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;border-left:2px solid var(--big-light);">고객 수</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">매출</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">비중</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;border-left:2px solid var(--mid-light);">고객 수</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">매출</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">비중</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;border-left:2px solid var(--small-light);">고객 수</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">매출</th>
+          <th style="padding:8px 12px;font-size:10px;color:var(--text-tertiary);font-weight:400;text-align:right;">비중</th>
+        </tr>
+      </thead>
+      <tbody id="sim-table"></tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+.sim-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.sim-btn:hover { border-color: var(--big); color: var(--big); }
+.sim-btn.active { background: var(--big); color: #fff; border-color: var(--big); }
+</style>
+
+<script>
+// ===== PAGE 5: Tier 시뮬레이터 (실제 BigQuery 데이터) =====
+const SIM_YEARS = ['2021','2022','2023','2024','2025'];
+const SIM_TOTAL_REV = [1028.0, 1085.9, 1131.2, 1181.7, 1132.3];
+
+// BigQuery 실측값 검증 완료 (전 기준 Big+Mid+Small 합산 = 총매출 일치)
+const SIM_DATA = {
+  100000: {
+    big:  { cust:[797,837,849,838,802],             rev:[510.1,529.5,564.5,605.4,562.2] },
+    mid:  { cust:[10200,10870,11341,11536,11150],   rev:[282.9,309.4,316.0,325.9,323.1] },
+    sml:  { cust:[131201,128568,126583,122441,110903], rev:[235.0,247.0,250.7,250.4,247.0] },
+  },
+  200000: {
+    big:  { cust:[401,415,426,417,404],             rev:[442.2,460.2,496.5,534.9,497.0] },
+    mid:  { cust:[10596,11292,11764,11957,11548],   rev:[350.7,378.7,384.0,396.3,388.3] },
+    sml:  { cust:[131201,128568,126583,122441,110903], rev:[235.0,247.0,250.7,250.4,247.0] },
+  },
+  300000: {
+    big:  { cust:[251,260,270,269,262],             rev:[397.9,416.1,453.1,491.4,455.0] },
+    mid:  { cust:[10746,11447,11920,12105,11690],   rev:[395.1,422.8,427.4,439.9,430.3] },
+    sml:  { cust:[131201,128568,126583,122441,110903], rev:[235.0,247.0,250.7,250.4,247.0] },
+  },
+  500000: {
+    big:  { cust:[154,163,168,162,158],             rev:[353.6,370.1,402.6,440.6,408.1] },
+    mid:  { cust:[10843,11544,12022,12212,11794],   rev:[439.4,468.8,477.9,490.7,477.2] },
+    sml:  { cust:[131201,128568,126583,122441,110903], rev:[235.0,247.0,250.7,250.4,247.0] },
+  },
+  1000000: {
+    big:  { cust:[77,82,85,82,81],                  rev:[286.8,311.4,336.1,364.6,336.0] },
+    mid:  { cust:[10920,11625,12105,12292,11871],   rev:[506.2,527.5,544.4,566.7,549.3] },
+    sml:  { cust:[131201,128568,126583,122441,110903], rev:[235.0,247.0,250.7,250.4,247.0] },
+  },
+};
+
+const SIM_BTN_MAP = {
+  100000:'sbtn-100k', 200000:'sbtn-200k',
+  300000:'sbtn-300k', 500000:'sbtn-500k', 1000000:'sbtn-1000k'
+};
+const SIM_LABELS = {
+  100000:'$100K', 200000:'$200K', 300000:'$300K', 500000:'$500K', 1000000:'$1M'
+};
+
+let simShareChart = null, simCustChart = null, simRevChart = null;
+let currentSim = 100000;
+let currentSimYear = 3; // 기본값 2024 (index 3)
+
+function fmt(n) { return n.toLocaleString(); }
+function fmtK(n) { return n >= 1000 ? (n/1000).toFixed(0)+'K' : n; }
+
+function setSimYear(yi) {
+  currentSimYear = yi;
+  // 연도 버튼 active
+  [0,1,2,3,4].forEach(i => {
+    document.getElementById('sybtn-'+i).classList.toggle('active', i === yi);
+  });
+  renderSim();
+}
+
+function setSim(thresh) {
+  currentSim = thresh;
+  Object.entries(SIM_BTN_MAP).forEach(([k,id]) => {
+    document.getElementById(id).classList.toggle('active', +k === thresh);
+  });
+  renderSim();
+}
+
+function renderSim() {
+  const thresh = currentSim;
+  const yi = currentSimYear;
+  const yr = SIM_YEARS[yi];
+  const lbl = SIM_LABELS[thresh];
+  const d = SIM_DATA[thresh];
+
+  document.getElementById('sim-label-big').textContent = `Big = ${lbl}+`;
+  document.getElementById('sim-label-mid').textContent = `Mid = $10K~${lbl}`;
+  document.getElementById('sim-label-sml').textContent = `Small = ~$10K`;
+  document.getElementById('sim-chart-desc').textContent = `Big ${lbl}+ 기준 · 5년간 매출 비중 추이`;
+
+  // Scorecard 라벨 연도 업데이트
+  document.getElementById('sim-big-label').textContent = `BIG BUYER · ${yr}`;
+  document.getElementById('sim-mid-label').textContent = `MID BUYER · ${yr}`;
+  document.getElementById('sim-sml-label').textContent = `SMALL BUYER · ${yr}`;
+
+  // Scorecard 수치 업데이트
+  document.getElementById('sim-big-cust').textContent = fmt(d.big.cust[yi])+'명';
+  document.getElementById('sim-big-pct').textContent  = (d.big.rev[yi]/SIM_TOTAL_REV[yi]*100).toFixed(1)+'%';
+  document.getElementById('sim-big-rev').textContent  = '$'+fmt(d.big.rev[yi])+'M';
+  document.getElementById('sim-mid-cust').textContent = fmt(d.mid.cust[yi])+'명';
+  document.getElementById('sim-mid-pct').textContent  = (d.mid.rev[yi]/SIM_TOTAL_REV[yi]*100).toFixed(1)+'%';
+  document.getElementById('sim-mid-rev').textContent  = '$'+fmt(d.mid.rev[yi])+'M';
+  document.getElementById('sim-sml-cust').textContent = fmt(d.sml.cust[yi])+'명';
+  document.getElementById('sim-sml-pct').textContent  = (d.sml.rev[yi]/SIM_TOTAL_REV[yi]*100).toFixed(1)+'%';
+  document.getElementById('sim-sml-rev').textContent  = '$'+fmt(d.sml.rev[yi])+'M';
+
+  // 매출 비중 차트
+  const bigPct = SIM_YEARS.map((_,i) => +(d.big.rev[i]/SIM_TOTAL_REV[i]*100).toFixed(1));
+  const midPct = SIM_YEARS.map((_,i) => +(d.mid.rev[i]/SIM_TOTAL_REV[i]*100).toFixed(1));
+  const smlPct = SIM_YEARS.map((_,i) => +(d.sml.rev[i]/SIM_TOTAL_REV[i]*100).toFixed(1));
+
+  if (simShareChart) simShareChart.destroy();
+  simShareChart = new Chart('sim-chart-share', {
+    type:'bar',
+    data:{ labels:SIM_YEARS, datasets:[
+      { label:'Big Buyer',   data:bigPct, backgroundColor:BIG, borderRadius:3, stack:'s' },
+      { label:'Mid Buyer',   data:midPct, backgroundColor:MID, borderRadius:3, stack:'s' },
+      { label:'Small Buyer', data:smlPct, backgroundColor:SML, borderRadius:3, stack:'s' },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'top',labels:{boxWidth:10,font:{size:11},color:TICK}},
+        tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}%`}} },
+      scales:{
+        x:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11}}},
+        y:{stacked:true, grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>v+'%'}, max:100}
+      }
+    }
+  });
+
+  // Big 고객 수 차트 (선택 연도 하이라이트)
+  if (simCustChart) simCustChart.destroy();
+  simCustChart = new Chart('sim-chart-cust', {
+    type:'bar',
+    data:{ labels:SIM_YEARS, datasets:[
+      { label:'Big Buyer 고객 수', data:d.big.cust,
+        backgroundColor: SIM_YEARS.map((_,i) => i===yi ? BIG : BIG+'55'),
+        borderRadius:3 }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y.toLocaleString()}명`}} },
+      scales:{
+        x:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11}}},
+        y:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>fmtK(v)}}
+      }
+    }
+  });
+
+  // Big 매출 차트 (선택 연도 하이라이트)
+  if (simRevChart) simRevChart.destroy();
+  simRevChart = new Chart('sim-chart-rev', {
+    type:'line',
+    data:{ labels:SIM_YEARS, datasets:[
+      { label:'Big Buyer 매출', data:d.big.rev,
+        borderColor:BIG, backgroundColor:'rgba(83,74,183,0.08)',
+        pointBackgroundColor: SIM_YEARS.map((_,i) => i===yi ? BIG : '#fff'),
+        pointBorderColor: BIG,
+        pointRadius: SIM_YEARS.map((_,i) => i===yi ? 7 : 4),
+        pointBorderWidth: SIM_YEARS.map((_,i) => i===yi ? 2.5 : 1.5),
+        borderWidth:2.5, tension:0.35, fill:true }
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` $${c.parsed.y}M`}} },
+      scales:{
+        x:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11}}},
+        y:{grid:{color:GRID}, ticks:{color:TICK,font:{size:11},callback:v=>'$'+v+'M'}}
+      }
+    }
+  });
+
+  // 테이블 업데이트 (선택 연도 하이라이트)
+  document.getElementById('sim-table').innerHTML = SIM_YEARS.map((y,i) => {
+    const tr = SIM_TOTAL_REV[i];
+    const bp = (d.big.rev[i]/tr*100).toFixed(1);
+    const mp = (d.mid.rev[i]/tr*100).toFixed(1);
+    const sp = (d.sml.rev[i]/tr*100).toFixed(1);
+    const isSelected = i === yi;
+    const rowBg = isSelected ? 'background:rgba(83,74,183,0.06);' : '';
+    const fontW = isSelected ? 'font-weight:700;' : '';
+    return `<tr style="border-bottom:0.5px solid var(--border);${rowBg}" onmouseover="this.style.background='#F0EFF0'" onmouseout="this.style.background='${isSelected?'rgba(83,74,183,0.06)':''}'">'
+      <td style="padding:10px 16px;font-weight:600;${isSelected?'color:var(--big);':''}">${y}${isSelected?' ◀':''}</td>
+      <td style="padding:10px 12px;text-align:right;${fontW}color:var(--big);border-left:2px solid var(--big-light);">${fmt(d.big.cust[i])}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;${fontW}">$${d.big.rev[i]}M</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;font-weight:600;color:var(--big);">${bp}%</td>
+      <td style="padding:10px 12px;text-align:right;${fontW}color:var(--mid);border-left:2px solid var(--mid-light);">${fmt(d.mid.cust[i])}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;${fontW}">$${d.mid.rev[i]}M</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;font-weight:600;color:var(--mid);">${mp}%</td>
+      <td style="padding:10px 12px;text-align:right;${fontW}color:var(--small);border-left:2px solid var(--small-light);">${fmt(d.sml.cust[i])}</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;${fontW}">$${d.sml.rev[i]}M</td>
+      <td style="padding:10px 12px;text-align:right;font-size:12px;font-weight:600;color:var(--small);">${sp}%</td>
+    </tr>`;
+  }).join('');
+}
+
+setSim(100000);
+</script>
+<!-- PAGE 4: Big Buyer Company Intelligence -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Big Buyer — 주요 고객사 분석</div>
+      <div class="page-sub">연평균 $100K+ 구매 고객사 Top 20 · 2021–2025 · Market Share 추이</div>
+    </div>
+  </div>
+
+  <!-- Scorecards -->
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px;">
+    <div class="scorecard">
+      <div class="sc-label">Big Buyer 전체 시장 (2024)</div>
+      <div class="sc-val">$2.0B</div>
+      <div class="sc-sub">1,006개 고객사 · Wholesale 매출의 ~61%</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Top 20 — 전체 Wholesale 시장 비중</div>
+      <div class="sc-val" style="color:var(--big);">33.5%<span class="sc-badge" style="background:var(--big-light);color:var(--big);">2024</span></div>
+      <div class="sc-sub">2021년 27.6% → 꾸준히 상승 중</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Top 1 고객사 (5년 합산)</div>
+      <div class="sc-val" style="color:var(--big);">ALTAR'D STATE</div>
+      <div class="sc-sub">$1.1B · 5년 합산</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:20px;">
+    <div class="scorecard">
+      <div class="sc-label">가장 빠르게 성장 ($M 기준)</div>
+      <div class="sc-val" style="color:var(--mid);">DILLARD'S</div>
+      <div class="sc-sub">+$43.5M (2021→2025)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">가장 빠르게 감소 ($M 기준)</div>
+      <div class="sc-val" style="color:var(--small);">RAINBOW</div>
+      <div class="sc-sub">-$62.7M (2021→2025)</div>
+    </div>
+  </div>
+
+  <!-- Top 20 Market Share by Year 카드 -->
+  <div class="chart-card" style="margin-bottom:20px;">
+    <div class="chart-title">Top 20 — 전체 Wholesale 시장 내 비중 추이</div>
+    <div class="chart-desc">Big Buyer + Mid Buyer + Small Buyer 전체 대비 Top 20 매출 비중 · 연도별 YoY 변화</div>
+    <div style="display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:10px;margin-top:12px;">
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
+        <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2021</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">27.6%</div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">$737M / $2,672M</div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
+        <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2022</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">31.1%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 3.5pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$939M / $3,018M</div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
+        <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2023</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">31.6%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 0.5pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,006M / $3,184M</div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border:1.5px solid var(--big);">
+        <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2024</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">33.5%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 1.9pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,120M / $3,345M</div>
+      </div>
+      <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
+        <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2025</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">32.6%</div>
+        <div style="font-size:11px;color:var(--small);margin-top:2px;">▼ 0.9pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,033M / $3,164M</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;" id="p3tabs">
+    <button class="tab active" onclick="p3switch('share')">Market Share 추이</button>
+    <button class="tab" onclick="p3switch('revenue')">매출 트렌드</button>
+    <button class="tab" onclick="p3switch('orders')">주문 건수</button>
+    <button class="tab" onclick="p3switch('ranking')">고객사 랭킹</button>
+  </div>
+
+  <!-- Market Share 탭 -->
+  <div id="p3-share">
+    <div class="charts-grid">
+      <div class="chart-card chart-full">
+        <div class="chart-title">Top 10 고객사 Market Share 추이 (%)</div>
+        <div class="chart-desc">Big Buyer 전체 매출 대비 각 고객사 비중 · 2021→2025</div>
+        <div class="canvas-wrap" style="height:300px"><canvas id="c-p3-share"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">2025년 Top 20 Market Share</div>
+        <div class="chart-desc">2025년 기준 Big Buyer 내 점유율</div>
+        <div class="canvas-wrap" style="height:340px"><canvas id="c-p3-share25"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">5년간 성장 vs 하락 (2021→2025)</div>
+        <div class="chart-desc">절대 매출 변화 기준 Winners & Losers ($M)</div>
+        <div class="canvas-wrap" style="height:340px"><canvas id="c-p3-growth"></canvas></div>
+      </div>
+    </div>
+    <div class="insight-row">
+      <div class="insight-card">
+        <div class="insight-tag" style="background:var(--big-light);color:var(--big);">Top 20 점유율</div>
+        <p>Top 20 고객사가 Big Buyer 전체 매출의 약 55%(2024) 담당. 나머지 45%는 1,151개 고객사가 분산 — 상위 20사와 중견 고객사가 균형있는 구조.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-tag" style="background:#F1EFE8;color:#5F5E5A;">기타 Big Buyer</div>
+        <p>Top 20 제외 1,151개 고객사가 2024년 기준 약 $915M(45%) 담당. 1인당 평균 $795K 구매 — 연평균 $100K~$500K 사이 중견 리테일러들이 시장 허리 구성.</p>
+      </div>
+      <div class="insight-card">
+        <div class="insight-tag" style="background:var(--mid-light);color:var(--mid);">집중도 시사점</div>
+        <p>ALTAR'D STATE, LULUS, STITCH FIX 상위 3사만 전체 Big Buyer 시장의 25% 담당. 특히 ALTAR'D STATE 한 곳이 2024년 $287M으로 단독 14% 차지.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue 탭 -->
+  <div id="p3-revenue" style="display:none;">
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;" id="p3-rev-sel"></div>
+    <div class="chart-card chart-full">
+      <div class="chart-title">고객사별 연간 매출 ($M)</div>
+      <div class="chart-desc">클릭으로 고객사 선택/해제</div>
+      <div class="canvas-wrap" style="height:320px"><canvas id="c-p3-rev"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Orders 탭 -->
+  <div id="p3-orders" style="display:none;">
+    <div class="charts-grid">
+      <div class="chart-card chart-full">
+        <div class="chart-title">전체 Big Buyer 시장 vs Top 20 주문 건수</div>
+        <div class="chart-desc">시장 전체 대비 주요 고객사 주문 비중</div>
+        <div class="canvas-wrap" style="height:260px"><canvas id="c-p3-ord-mkt"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ranking 탭 -->
+  <div id="p3-ranking" style="display:none;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <label style="font-size:12px;color:var(--text-secondary);">기준 연도</label>
+      <select id="p3-rank-year" style="font-size:13px;padding:4px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);">
+        <option value="4">2025</option>
+        <option value="3">2024</option>
+        <option value="2">2023</option>
+        <option value="1">2022</option>
+        <option value="0">2021</option>
+      </select>
+    </div>
+    <div class="chart-card chart-full" style="padding:0;">
+      <table style="width:100%;font-size:12px;border-collapse:collapse;" id="p3-rank-table">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border);">
+            <th style="padding:12px 16px;text-align:left;font-size:11px;color:var(--text-secondary);font-weight:500;">#</th>
+            <th style="padding:12px 16px;text-align:left;font-size:11px;color:var(--text-secondary);font-weight:500;">고객사</th>
+            <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">매출</th>
+            <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">Market Share</th>
+            <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">YoY</th>
+            <th style="padding:12px 16px;text-align:center;font-size:11px;color:var(--text-secondary);font-weight:500;">5년 트렌드</th>
+          </tr>
+        </thead>
+        <tbody id="p3-rank-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:32px;">데이터 기준: 2021.01.01 ~ 2025.12.31 · quick-woodland-463404-n5.nvlt.INVOICE · Big Buyer = 연평균 $100K+ 구매</div>
+</div>
+
+<script>
+// ===== PAGE 3 DATA =====
+const P3_YEARS = ['2021','2022','2023','2024','2025'];
+const P3_MARKET = { rev: [510.1,529.5,564.5,605.4,562.2], orders: [362168,444998,488120,490788,425548] };
+const P3_CUSTOMERS = {
+  "ALTAR'D STATE": { rev: [108.004,223.255,231.951,286.829,259.393], ord: [4082,11136,11324,13345,12584] },
+  'LULUS':         { rev: [88.923,172.311,146.792,121.998,94.134],   ord: [13257,21313,20083,16305,11695] },
+  'STITCH FIX':    { rev: [87.844,99.035,100.344,105.34,85.124],     ord: [18506,24745,23406,24193,21934] },
+  'RAINBOW':       { rev: [115.209,84.578,57.785,44.987,52.539],     ord: [4389,2759,2304,1831,1611] },
+  'FASHION NOVA':  { rev: [97.731,79.462,61.726,44.602,33.524],      ord: [9227,8611,6985,6892,5363] },
+  'VICI':          { rev: [47.353,64.406,48.478,34.116,43.419],      ord: [5094,5021,5122,4524,5364] },
+  'FRECKLED POPPY':{ rev: [27.749,31.896,69.516,56.124,45.276],      ord: [1779,3020,3764,1903,3118] },
+  'ROSS STORES':   { rev: [52.987,39.301,23.172,26.781,36.177],      ord: [2123,1397,1311,1176,1188] },
+  'TJ MAXX':       { rev: [25.096,17.984,26.981,56.473,47.228],      ord: [2063,1634,2383,4076,3375] },
+  "DILLARD'S":     { rev: [13.574,21.758,28.491,39.142,57.086],      ord: [1453,3076,2887,2340,3836] },
+  'BUCKLE':        { rev: [4.785,6.405,46.067,45.569,20.871],        ord: [330,543,1780,2330,1431] },
+  'DAILY LOOK':    { rev: [7.255,21.207,25.977,32.331,28.808],       ord: [1354,2055,3040,3939,2545] },
+  'WINDSOR':       { rev: [14.169,13.487,23.946,37.702,25.622],      ord: [2400,2215,3020,4030,2740] },
+  "FRANCESCA'S":   { rev: [28.823,28.299,26.625,16.145,1.212],       ord: [1207,1724,1766,1005,70] },
+  'TUCKERNUCK':    { rev: [1.47,3.003,5.924,40.504,45.826],          ord: [100,270,288,462,484] },
+  'MOCO BOUTIQUE': { rev: [3.111,5.831,27.362,35.543,23.945],        ord: [506,727,1331,1197,1212] },
+  'MAURICES':      { rev: [0,6.392,10.839,39.714,37.192],            ord: [0,180,162,598,492] },
+  'AVARA':         { rev: [3.531,7.757,12.212,19.316,37.253],        ord: [2196,2454,2259,3831,4302] },
+  'BOHME':         { rev: [2.819,3.203,14.681,15.711,39.118],        ord: [247,448,1109,1082,2081] },
+  "BLOOMINGDALE'S":{ rev: [6.725,9.8,17.032,21.022,18.923],          ord: [6601,5540,7960,8241,9490] },
+};
+
+const P3_NAMES = Object.keys(P3_CUSTOMERS);
+const P3_COLORS = [
+  '#534AB7','#1D9E75','#D85A30','#BA7517','#185FA5',
+  '#993556','#3B6D11','#A32D2D','#0F6E56','#854F0B',
+  '#7F77DD','#5DCAA5','#F0997B','#EF9F27','#85B7EB',
+  '#ED93B1','#97C459','#F09595','#1D9E75','#888780'
+];
+
+const P3_GRID = 'rgba(0,0,0,0.06)', P3_TICK = '#999';
+
+// Tab switch
+function p3switch(tab) {
+  ['share','revenue','orders','ranking'].forEach(t => {
+    document.getElementById('p3-'+t).style.display = t===tab ? '' : 'none';
+  });
+  document.querySelectorAll('#p3tabs .tab').forEach((b,i) => {
+    b.classList.toggle('active', ['share','revenue','orders','ranking'][i]===tab);
+  });
+  if (tab==='revenue' && !p3RevChart) buildP3RevChart();
+  if (tab==='ranking') buildP3Ranking(+document.getElementById('p3-rank-year').value);
+}
+
+// Market Share line chart (Top 10)
+const top10 = P3_NAMES.slice(0,10);
+new Chart('c-p3-share', {
+  type: 'line',
+  data: {
+    labels: P3_YEARS,
+    datasets: top10.map((name,i) => ({
+      label: name,
+      data: P3_YEARS.map((_,yi) => P3_MARKET.rev[yi] > 0 ? +(P3_CUSTOMERS[name].rev[yi]/P3_MARKET.rev[yi]*100).toFixed(2) : 0),
+      borderColor: P3_COLORS[i],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: P3_COLORS[i],
+      borderWidth: 2, pointRadius: 4, tension: 0.35,
+    }))
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:'bottom', labels:{boxWidth:10,padding:10,font:{size:10},color:P3_TICK} }, tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(2)}%` } } },
+    scales:{ x:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11}}}, y:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11},callback:v=>v+'%'}} }
+  }
+});
+
+// 2025 Market Share donut
+const share25 = P3_NAMES.map(n => +(P3_CUSTOMERS[n].rev[4]/P3_MARKET.rev[4]*100).toFixed(2));
+const others25 = +(100 - share25.reduce((a,b)=>a+b,0)).toFixed(2);
+new Chart('c-p3-share25', {
+  type: 'doughnut',
+  data: {
+    labels: [...P3_NAMES, '기타 Big Buyer'],
+    datasets: [{ data: [...share25, others25 > 0 ? others25 : 0], backgroundColor: [...P3_COLORS,'#D3D1C7'], borderWidth:2, borderColor:'#fff' }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false, cutout:'55%',
+    plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:c=>` ${c.label}: ${c.parsed.toFixed(2)}%` } } }
+  }
+});
+
+// Growth bar
+const growthData = P3_NAMES.map(name => {
+  const r0 = P3_CUSTOMERS[name].rev[0];
+  const r4 = P3_CUSTOMERS[name].rev[4];
+  return { name, delta: +(r4-r0).toFixed(3) };
+}).sort((a,b) => b.delta - a.delta);
+new Chart('c-p3-growth', {
+  type: 'bar',
+  data: {
+    labels: growthData.map(d => d.name),
+    datasets: [{ data: growthData.map(d => d.delta), backgroundColor: growthData.map(d => d.delta >= 0 ? '#1D9E75' : '#D85A30'), borderRadius:3 }]
+  },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.x >= 0 ? '+' : ''}$${c.parsed.x.toFixed(2)}M`}} },
+    scales:{ x:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:10},callback:v=>(v>=0?'+':'')+v+'M'}}, y:{grid:{display:false},ticks:{color:P3_TICK,font:{size:10}}} }
+  }
+});
+
+// Revenue trend (interactive)
+let p3RevChart = null;
+let p3SelRev = new Set(P3_NAMES.slice(0,6));
+function buildP3RevChart() {
+  const sel = document.getElementById('p3-rev-sel');
+  sel.innerHTML = P3_NAMES.map((name,i) => {
+    const active = p3SelRev.has(name);
+    return `<button onclick="p3ToggleRev('${name}')" id="p3rb-${i}" style="font-size:11px;padding:4px 10px;border-radius:var(--border-radius-md);border:1px solid ${active ? P3_COLORS[i] : 'var(--color-border-tertiary)'};background:${active ? P3_COLORS[i]+'22' : 'transparent'};color:${active ? P3_COLORS[i] : 'var(--color-text-secondary)'};cursor:pointer;">${name}</button>`;
+  }).join('');
+  renderP3RevChart();
+}
+function p3ToggleRev(name) {
+  if (p3SelRev.has(name)) p3SelRev.delete(name); else p3SelRev.add(name);
+  buildP3RevChart();
+}
+function renderP3RevChart() {
+  if (p3RevChart) p3RevChart.destroy();
+  p3RevChart = new Chart('c-p3-rev', {
+    type:'line',
+    data:{ labels:P3_YEARS, datasets:[...p3SelRev].map(name => ({
+      label:name, data:P3_CUSTOMERS[name].rev,
+      borderColor:P3_COLORS[P3_NAMES.indexOf(name)],
+      backgroundColor:'transparent',
+      pointBackgroundColor:P3_COLORS[P3_NAMES.indexOf(name)],
+      borderWidth:2, pointRadius:4, tension:0.35,
+    }))},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10},color:P3_TICK}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y.toFixed(2)}M`}} },
+      scales:{ x:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11}}}, y:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11},callback:v=>'$'+v+'M'}} }
+    }
+  });
+}
+
+// Orders market chart
+new Chart('c-p3-ord-mkt', {
+  type:'bar',
+  data:{
+    labels:P3_YEARS,
+    datasets:[
+      { label:'전체 Big Buyer 시장', data:P3_MARKET.orders, backgroundColor:'#D3D1C7', borderRadius:3 },
+      { label:'Top 20 합산', data:P3_YEARS.map((_,yi)=>P3_NAMES.reduce((s,n)=>s+P3_CUSTOMERS[n].ord[yi],0)), backgroundColor:'#534AB7', borderRadius:3 },
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'top',labels:{boxWidth:10,font:{size:11},color:P3_TICK}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString()}건`}} },
+    scales:{ x:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11}}}, y:{grid:{color:P3_GRID},ticks:{color:P3_TICK,font:{size:11},callback:v=>(v/1000).toFixed(0)+'K'}} }
+  }
+});
+
+// Ranking table
+function buildP3Ranking(yi) {
+  const prev = yi > 0 ? yi-1 : null;
+  const sorted = P3_NAMES.map(name => ({
+    name,
+    rev: P3_CUSTOMERS[name].rev[yi],
+    share: +(P3_CUSTOMERS[name].rev[yi]/P3_MARKET.rev[yi]*100).toFixed(2),
+    yoy: prev !== null && P3_CUSTOMERS[name].rev[prev] > 0
+      ? +((P3_CUSTOMERS[name].rev[yi]-P3_CUSTOMERS[name].rev[prev])/P3_CUSTOMERS[name].rev[prev]*100).toFixed(1)
+      : null,
+    revArr: P3_CUSTOMERS[name].rev,
+  })).sort((a,b)=>b.rev-a.rev);
+
+  const maxRev = sorted[0].rev;
+  document.getElementById('p3-rank-body').innerHTML = sorted.map((d,i) => {
+    const sparkMax = Math.max(...d.revArr);
+    const bars = d.revArr.map((v,vi) => {
+      const h = sparkMax > 0 ? Math.max(2, Math.round(v/sparkMax*24)) : 2;
+      const c = vi===yi ? P3_COLORS[P3_NAMES.indexOf(d.name)] : '#D3D1C7';
+      return `<div style="flex:1;height:${h}px;background:${c};border-radius:2px 2px 0 0;min-height:2px;"></div>`;
+    }).join('');
+    const yoyColor = d.yoy === null ? 'var(--text-tertiary)' : d.yoy > 0 ? '#1D9E75' : '#D85A30';
+    const yoyText = d.yoy === null ? '—' : (d.yoy > 0 ? '+' : '') + d.yoy + '%';
+    const wBar = maxRev > 0 ? Math.round(d.rev/maxRev*100) : 0;
+    return `<tr style="border-bottom:0.5px solid var(--border);">
+      <td style="padding:10px 16px;color:var(--text-tertiary);font-size:11px;">${i+1}</td>
+      <td style="padding:10px 16px;font-weight:500;font-size:13px;">${d.name}</td>
+      <td style="padding:10px 16px;text-align:right;">
+        <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;">
+          <div style="width:60px;height:4px;background:var(--color-background-secondary);border-radius:2px;">
+            <div style="width:${wBar}%;height:100%;background:var(--big);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:13px;font-weight:500;">$${d.rev.toFixed(2)}M</span>
+        </div>
+      </td>
+      <td style="padding:10px 16px;text-align:right;font-size:12px;">${d.share.toFixed(2)}%</td>
+      <td style="padding:10px 16px;text-align:right;font-size:12px;color:${yoyColor};font-weight:500;">${yoyText}</td>
+      <td style="padding:10px 16px;">
+        <div style="display:flex;align-items:flex-end;gap:2px;height:28px;">${bars}</div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('p3-rank-year').addEventListener('change', e => buildP3Ranking(+e.target.value));
+buildP3Ranking(0);
+</script>
+
+<!-- PAGE 5: Top 50 Big Buyer 고객사 분석 -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Top 50 Big Buyer 고객사</div>
+      <div class="page-sub">5년 합산 기준 상위 50개 고객사 · 2021–2025 · 연도별 매출 트렌드</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <div style="font-size:12px;color:var(--text-secondary);">정렬 기준</div>
+      <select id="p4-sort" style="font-size:12px;padding:5px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;">
+        <option value="total">5년 합산</option>
+        <option value="2025">2025년</option>
+        <option value="2024">2024년</option>
+        <option value="growth">2021→2025 성장률</option>
+        <option value="delta">2021→2025 증감액</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Scorecards -->
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px;">
+    <div class="scorecard">
+      <div class="sc-label">Top 50 5년 합산</div>
+      <div class="sc-val" style="color:var(--big);">$7.2B</div>
+      <div class="sc-sub">Big Buyer 시장의 약 40%</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">최고 성장 (절대액)</div>
+      <div class="sc-val" style="color:var(--mid);">DILLARD'S</div>
+      <div class="sc-sub">+$43.5M (2021→2025)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">최고 성장 (성장률)</div>
+      <div class="sc-val" style="color:var(--mid);">TUCKERNUCK</div>
+      <div class="sc-sub">$1.5M → $45.8M (+2,953%)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">최대 감소</div>
+      <div class="sc-val" style="color:var(--small);">RAINBOW</div>
+      <div class="sc-sub">$115.2M → $52.5M (-54%)</div>
+    </div>
+  </div>
+
+  <!-- 테이블 -->
+  <div class="chart-card" style="padding:0;overflow:hidden;">
+    <table style="width:100%;border-collapse:collapse;font-size:12px;" id="p4-table">
+      <thead>
+        <tr style="border-bottom:1.5px solid var(--border);background:var(--bg);">
+          <th style="padding:12px 16px;text-align:left;font-size:11px;color:var(--text-secondary);font-weight:500;width:40px;">#</th>
+          <th style="padding:12px 16px;text-align:left;font-size:11px;color:var(--text-secondary);font-weight:500;">고객사</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">5년 합산</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">2021</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">2022</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">2023</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">2024</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">2025</th>
+          <th style="padding:12px 16px;text-align:center;font-size:11px;color:var(--text-secondary);font-weight:500;">트렌드</th>
+          <th style="padding:12px 16px;text-align:right;font-size:11px;color:var(--text-secondary);font-weight:500;">증감</th>
+        </tr>
+      </thead>
+      <tbody id="p4-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ===== PAGE 7 DATA =====
+const P4_DATA = [
+  { name:"ALTAR'D STATE",        total:1109.4, rev:[108.0,223.2,231.9,286.8,259.4] },
+  { name:'LULUS',                total:669.2,  rev:[95.3,184.9,157.5,130.6,100.8] },
+  { name:'STITCH FIX',           total:477.7,  rev:[87.8,99.0,100.3,105.3,85.1] },
+  { name:'RAINBOW',              total:355.1,  rev:[115.2,84.6,57.8,45.0,52.5] },
+  { name:'FASHION NOVA',         total:317.0,  rev:[97.7,79.5,61.7,44.6,33.5] },
+  { name:'VICI',                 total:237.8,  rev:[47.4,64.4,48.5,34.1,43.4] },
+  { name:'FRECKLED POPPY',       total:230.6,  rev:[27.8,31.9,69.5,56.1,45.3] },
+  { name:'ROSS STORES',          total:204.7,  rev:[60.7,43.7,27.9,32.6,39.8] },
+  { name:'TJ MAXX',              total:173.8,  rev:[25.1,18.0,27.0,56.5,47.2] },
+  { name:"DILLARD'S",            total:160.1,  rev:[13.6,21.8,28.5,39.1,57.1] },
+  { name:'BUCKLE',               total:123.7,  rev:[4.8,6.4,46.1,45.6,20.9] },
+  { name:'DAILY LOOK',           total:115.6,  rev:[7.2,21.2,26.0,32.3,28.8] },
+  { name:'WINDSOR',              total:114.9,  rev:[14.2,13.5,23.9,37.7,25.6] },
+  { name:'TUCKERNUCK',           total:96.7,   rev:[1.5,3.0,5.9,40.5,45.8] },
+  { name:"FRANCESCA'S",          total:96.3,   rev:[27.2,27.1,25.6,15.2,1.2] },
+  { name:'MOCO BOUTIQUE',        total:95.8,   rev:[3.1,5.8,27.4,35.5,23.9] },
+  { name:'MAURICES',             total:94.1,   rev:[0.0,6.4,10.8,39.7,37.2] },
+  { name:'AVARA',                total:80.1,   rev:[3.5,7.8,12.2,19.3,37.2] },
+  { name:'BOHME',                total:75.5,   rev:[2.8,3.2,14.7,15.7,39.1] },
+  { name:"BLOOMINGDALE'S",       total:73.5,   rev:[6.7,9.8,17.0,21.0,18.9] },
+  { name:'ANTHROPOLOGIE',        total:64.3,   rev:[12.9,16.5,12.8,9.9,12.2] },
+  { name:'EXPRESS',              total:63.4,   rev:[12.7,29.8,15.5,2.1,3.3] },
+  { name:'NUULY',                total:60.4,   rev:[10.6,12.3,9.5,14.9,13.2] },
+  { name:'VESTIQUE',             total:52.6,   rev:[9.1,8.0,13.0,14.4,8.2] },
+  { name:'IMPRESSIONS',          total:42.2,   rev:[9.0,8.1,9.3,8.8,7.0] },
+  { name:'URBAN OUTFITTERS',     total:41.4,   rev:[8.0,6.8,5.0,9.3,12.3] },
+  { name:'AVA LANE BOUTIQUE',    total:38.0,   rev:[2.8,7.1,9.2,16.4,2.5] },
+  { name:'BURLINGTON',           total:37.8,   rev:[6.8,10.8,7.5,4.6,8.1] },
+  { name:'PALMETTO MOON',        total:37.2,   rev:[6.0,5.2,8.2,9.7,8.1] },
+  { name:'DRY GOODS',            total:36.7,   rev:[7.0,6.7,6.8,7.3,8.8] },
+  { name:'NORDSTROM',            total:34.7,   rev:[5.1,6.5,7.2,8.4,7.5] },
+  { name:'WANTABLE',             total:32.6,   rev:[3.7,7.9,7.9,6.5,6.5] },
+  { name:'LANE 201',             total:28.8,   rev:[2.9,4.9,6.8,6.3,7.8] },
+  { name:'WALKER ROSE BOUTIQUE', total:27.6,   rev:[3.5,2.4,4.9,8.4,8.4] },
+  { name:'THREE BIRD NEST',      total:27.5,   rev:[0.8,3.2,4.1,6.5,12.9] },
+  { name:"MACY'S MARKETPLACE",   total:26.7,   rev:[0.7,1.4,11.5,8.9,4.3] },
+  { name:'AVENUE SHOPS',         total:24.3,   rev:[4.0,5.0,10.9,4.0,0.4] },
+  { name:'MARSHALLS',            total:22.1,   rev:[6.8,4.2,4.5,4.1,2.6] },
+  { name:'WILD OAK BOUTIQUE',    total:19.5,   rev:[0.2,1.2,9.2,3.2,5.6] },
+  { name:'CHIC SOUL',            total:19.3,   rev:[8.2,6.3,2.9,1.5,0.4] },
+  { name:'KALI ROSE',            total:19.2,   rev:[1.0,1.6,7.5,6.9,2.2] },
+  { name:'CITI TRENDS',          total:18.6,   rev:[6.0,3.8,2.3,3.1,3.5] },
+  { name:'DISCOUNT DIVAS',       total:16.7,   rev:[2.6,2.5,3.6,4.7,3.4] },
+  { name:'RUSH APPAREL LLC',     total:16.4,   rev:[1.4,0.7,3.3,6.1,4.9] },
+  { name:'SHOPBOP',              total:15.3,   rev:[3.2,4.4,2.8,2.5,2.5] },
+  { name:"DTLR INC",             total:11.3,   rev:[0.0,1.5,5.7,1.7,2.4] },
+  { name:"TILLY'S, INC",         total:10.7,   rev:[1.7,1.4,2.0,2.5,3.1] },
+  { name:'JAKO ENTERPRISES INC (SNIPES)', total:9.1, rev:[0.0,0.0,2.8,5.0,1.3] },
+  { name:'THE PINK LILY BOUTIQUE',total:8.5,  rev:[2.0,2.6,1.5,0.9,1.4] },
+  { name:'SHORT STORY - IS',     total:8.0,    rev:[0.1,0.6,1.6,2.3,3.4] },
+];
+
+function getSortedP4(sortKey) {
+  const d = P4_DATA.map(r => ({
+    ...r,
+    delta: r.rev[4] - r.rev[0],
+    growth: r.rev[0] > 0 ? (r.rev[4] - r.rev[0]) / r.rev[0] * 100 : (r.rev[4] > 0 ? 9999 : 0),
+  }));
+  if (sortKey === 'total')  return [...d].sort((a,b) => b.total - a.total);
+  if (sortKey === '2025')   return [...d].sort((a,b) => b.rev[4] - a.rev[4]);
+  if (sortKey === '2024')   return [...d].sort((a,b) => b.rev[3] - a.rev[3]);
+  if (sortKey === 'growth') return [...d].sort((a,b) => b.growth - a.growth);
+  if (sortKey === 'delta')  return [...d].sort((a,b) => b.delta - a.delta);
+  return d;
+}
+
+function buildP4Table(sortKey='total') {
+  const sorted = getSortedP4(sortKey);
+  const maxTotal = sorted[0].total;
+
+  document.getElementById('p4-body').innerHTML = sorted.map((d, i) => {
+    const maxRev = Math.max(...d.rev);
+    const bars = d.rev.map((v, vi) => {
+      const h = maxRev > 0 ? Math.max(2, Math.round(v/maxRev*24)) : 2;
+      const pct = vi / 4;
+      const r1 = 83, g1 = 74, b1 = 183;
+      const r2 = 29, g2 = 158, b2 = 117;
+      const cr = Math.round(r1 + (r2-r1)*pct);
+      const cg = Math.round(g1 + (g2-g1)*pct);
+      const cb = Math.round(b1 + (b2-b1)*pct);
+      const col = `rgb(${cr},${cg},${cb})`;
+      return `<div style="flex:1;height:${h}px;background:${col};border-radius:2px 2px 0 0;min-height:2px;"></div>`;
+    }).join('');
+
+    const delta = d.rev[4] - d.rev[0];
+    const deltaColor = delta > 0 ? '#1D9E75' : delta < 0 ? '#D85A30' : '#999';
+    const deltaText = (delta >= 0 ? '+' : '') + '$' + Math.abs(delta).toFixed(1) + 'M';
+    const wBar = maxTotal > 0 ? Math.round(d.total/maxTotal*100) : 0;
+
+    // 트렌드 방향 아이콘
+    const last2 = d.rev[4] - d.rev[3];
+    const trendIcon = last2 > 1 ? '↑' : last2 < -1 ? '↓' : '→';
+    const trendColor = last2 > 1 ? '#1D9E75' : last2 < -1 ? '#D85A30' : '#999';
+
+    return `<tr style="border-bottom:0.5px solid var(--border);" onmouseover="this.style.background='#F7F6F3'" onmouseout="this.style.background=''">
+      <td style="padding:10px 16px;color:var(--text-tertiary);font-size:11px;">${i+1}</td>
+      <td style="padding:10px 16px;font-weight:500;font-size:13px;">${d.name}</td>
+      <td style="padding:10px 16px;text-align:right;">
+        <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;">
+          <div style="width:50px;height:3px;background:#E8E7E3;border-radius:2px;">
+            <div style="width:${wBar}%;height:100%;background:var(--big);border-radius:2px;"></div>
+          </div>
+          <span style="font-size:12px;font-weight:600;">$${d.total.toFixed(1)}M</span>
+        </div>
+      </td>
+      ${d.rev.map(v => `<td style="padding:10px 16px;text-align:right;font-size:12px;color:var(--text-secondary);">$${v.toFixed(1)}M</td>`).join('')}
+      <td style="padding:10px 16px;">
+        <div style="display:flex;align-items:flex-end;gap:2px;height:28px;">${bars}</div>
+      </td>
+      <td style="padding:10px 16px;text-align:right;font-size:12px;font-weight:500;color:${deltaColor};">${deltaText}</td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('p4-sort').addEventListener('change', e => buildP4Table(e.target.value));
+buildP4Table();
+</script>
+
+<!-- PAGE 6: 채널 Market Share 트렌드 -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">채널 Market Share 트렌드</div>
+      <div class="page-sub">2021 – 2025 · Marketplace(FashionGo+Faire) vs Company/Chain·Tradeshow·Website 비중 변화</div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#534AB7"></span>Company/Chain</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>Marketplace 합산</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#D85A30"></span>Tradeshow</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#185FA5"></span>Website</div>
+    </div>
+  </div>
+
+  <!-- 스코어카드 -->
+  <div class="scorecard-row" style="grid-template-columns: repeat(4, minmax(0,1fr));">
+    <div class="scorecard">
+      <div class="sc-label">Company/Chain 변화</div>
+      <div class="sc-val" style="color:var(--big)">+4.7pp<span class="sc-badge" style="background:var(--big-light);color:var(--big)">↑</span></div>
+      <div class="sc-sub">28.7%(2021) → 33.4%(2025)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Marketplace 합산 변화</div>
+      <div class="sc-val" style="color:var(--mid)">+3.9pp<span class="sc-badge" style="background:var(--mid-light);color:var(--mid)">↑</span></div>
+      <div class="sc-sub">7.5%(2021) → 11.4%(2025) · 절대액 +46.7%</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Tradeshow 변화</div>
+      <div class="sc-val" style="color:var(--small)">-6.2pp<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓</span></div>
+      <div class="sc-sub">18.5%(2024) → 12.3%(2025) 급락</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Website 변화</div>
+      <div class="sc-val" style="color:#185FA5">+2.1pp<span class="sc-badge" style="background:#E6F1FB;color:#185FA5">↑</span></div>
+      <div class="sc-sub">8.9%(2021) → 11.0%(2025)</div>
+    </div>
+  </div>
+
+  <!-- 라인 차트 -->
+  <div class="section-divider">채널별 Market Share 추이 (%)</div>
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">채널별 Market Share 라인 차트</div>
+      <div class="chart-desc">Marketplace 합산(점선) = FashionGo + Faire · Company/Chain 꾸준히 상승 · Tradeshow 2025 급락</div>
+      <div class="canvas-wrap" style="height:280px"><canvas id="c-ms-line"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 스택 바 차트 -->
+  <div class="section-divider">연도별 채널 비중 구성 (%)</div>
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">채널 비중 스택 바 차트</div>
+      <div class="chart-desc">전체 채널 구성 변화 한눈에 확인 · Marketplace 확대 · Tradeshow 축소 · Other 포함</div>
+      <div class="canvas-wrap" style="height:280px"><canvas id="c-ms-bar"></canvas></div>
+    </div>
+  </div>
+
+  <!-- FashionGo vs Faire 내부 구성 -->
+  <div class="section-divider">Marketplace 내부 구성 — FashionGo vs Faire</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">FashionGo vs Faire 절대 매출 ($M)</div>
+      <div class="chart-desc">합산은 성장했지만 FashionGo 감소 · Faire 폭발 성장 — 플랫폼 주도권 교체</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-mkt-stack"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">FashionGo vs Faire 비중 (Marketplace 내, %)</div>
+      <div class="chart-desc">2021년 FashionGo 92% → 2025년 59% · Faire 8% → 41%</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-mkt-share"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 인사이트 -->
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Company/Chain</div>
+      <p>5년간 꾸준히 +4.7pp 상승. 전체 시장 규모가 5년간 거의 제자리(+0.4%)인 상황에서 Tradeshow 등 이탈 채널 비중을 흡수하며 구조적 우위를 확대.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Marketplace — 성장하되 교체 중</div>
+      <p>합산 절대액 $77M → $113M(+46.7%)으로 성장. 단, FashionGo가 줄어드는 자리를 Faire가 채우는 구조 — 전체 파이가 커진 게 아니라 플랫폼 주도권이 통째로 넘어가는 중.</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Tradeshow</div>
+      <p>2024년까지 14~18% 안정적 유지 후 2025년 12.3%로 급락(-6.2pp). 이탈한 비중이 Company/Chain과 Marketplace로 분산 흡수되는 패턴으로 오프라인 채널 구조 약화 신호.</p>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:32px;">데이터 기준: 2021.01.01 ~ 2025.12.31 · Invoice 전체(Open+Closed) · Marketplace = FashionGo + Faire 합산</div>
+</div>
+
+<script>
+// ===== PAGE 6: 채널 Market Share DATA =====
+const MS_YEARS = ['2021','2022','2023','2024','2025'];
+const MS_RAW = {
+  'Company/Chain': [296.826, 306.281, 339.386, 376.048, 344.992],
+  'Direct Sales':  [224.056, 234.966, 246.484, 258.004, 253.958],
+  'Tradeshow':     [147.613, 172.368, 183.679, 190.798, 126.904],
+  'Website':       [ 91.930,  95.421,  99.257, 112.147, 113.364],
+  'FashionGo':     [ 70.602,  88.844,  91.657,  78.002,  66.702],
+  'Faire':         [  6.419,  14.688,  17.500,  27.140,  46.273],
+  'Shopify':       [  3.686,   3.723,   6.966,   1.893,   3.946],
+  'Other':         [186.824, 169.635, 146.280, 137.625, 176.171],
+};
+
+const MS_TOTALS = MS_YEARS.map((_,i) => Object.values(MS_RAW).reduce((s,a) => s + a[i], 0));
+const msPct = (key, i) => +(MS_RAW[key][i] / MS_TOTALS[i] * 100).toFixed(1);
+const msMarketplace = MS_YEARS.map((_,i) => +((MS_RAW['FashionGo'][i] + MS_RAW['Faire'][i]) / MS_TOTALS[i] * 100).toFixed(1));
+
+const MS_GRID = 'rgba(0,0,0,0.06)', MS_TICK = '#999';
+
+// FashionGo vs Faire 절대액 스택 바
+new Chart('c-mkt-stack', {
+  type: 'bar',
+  data: {
+    labels: MS_YEARS,
+    datasets: [
+      { label:'FashionGo', data: MS_RAW['FashionGo'], backgroundColor:'#1D9E75', borderRadius:3, stack:'s' },
+      { label:'Faire',     data: MS_RAW['Faire'],     backgroundColor:'#BA7517', borderRadius:3, stack:'s' },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'top', labels:{ boxWidth:10, font:{size:11}, color:MS_TICK } },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: $${c.parsed.y.toFixed(1)}M` } }
+    },
+    scales:{
+      x:{ stacked:true, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}} },
+      y:{ stacked:true, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}, callback:v=>'$'+v+'M'} }
+    }
+  }
+});
+
+// FashionGo vs Faire 비중 스택 바 (Marketplace 내)
+new Chart('c-mkt-share', {
+  type: 'bar',
+  data: {
+    labels: MS_YEARS,
+    datasets: [
+      { label:'FashionGo', data: MS_YEARS.map((_,i) => {
+          const total = MS_RAW['FashionGo'][i] + MS_RAW['Faire'][i];
+          return +(MS_RAW['FashionGo'][i] / total * 100).toFixed(1);
+        }), backgroundColor:'#1D9E75', borderRadius:3, stack:'s' },
+      { label:'Faire', data: MS_YEARS.map((_,i) => {
+          const total = MS_RAW['FashionGo'][i] + MS_RAW['Faire'][i];
+          return +(MS_RAW['Faire'][i] / total * 100).toFixed(1);
+        }), backgroundColor:'#BA7517', borderRadius:3, stack:'s' },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'top', labels:{ boxWidth:10, font:{size:11}, color:MS_TICK } },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+    },
+    scales:{
+      x:{ stacked:true, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}} },
+      y:{ stacked:true, max:100, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}, callback:v=>v+'%'} }
+    }
+  }
+});
+
+// 라인 차트
+new Chart('c-ms-line', {
+  type: 'line',
+  data: {
+    labels: MS_YEARS,
+    datasets: [
+      { label:'Company/Chain',   data: MS_YEARS.map((_,i) => msPct('Company/Chain',i)), borderColor:'#534AB7', backgroundColor:'rgba(83,74,183,0.06)',  pointBackgroundColor:'#534AB7', borderWidth:2.5, pointRadius:5, tension:0.35, fill:false },
+      { label:'Marketplace 합산', data: msMarketplace, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.06)', pointBackgroundColor:'#1D9E75', borderWidth:2.5, pointRadius:5, tension:0.35, fill:false, borderDash:[6,3] },
+      { label:'FashionGo',       data: MS_YEARS.map((_,i) => msPct('FashionGo',i)),     borderColor:'#5DCAA5', backgroundColor:'transparent', pointBackgroundColor:'#5DCAA5', borderWidth:1.5, pointRadius:3, tension:0.35, fill:false, borderDash:[2,3] },
+      { label:'Faire',           data: MS_YEARS.map((_,i) => msPct('Faire',i)),          borderColor:'#BA7517', backgroundColor:'transparent', pointBackgroundColor:'#BA7517', borderWidth:1.5, pointRadius:3, tension:0.35, fill:false },
+      { label:'Tradeshow',       data: MS_YEARS.map((_,i) => msPct('Tradeshow',i)),      borderColor:'#D85A30', backgroundColor:'rgba(216,90,48,0.06)',  pointBackgroundColor:'#D85A30', borderWidth:2.5, pointRadius:5, tension:0.35, fill:false },
+      { label:'Website',         data: MS_YEARS.map((_,i) => msPct('Website',i)),         borderColor:'#185FA5', backgroundColor:'transparent', pointBackgroundColor:'#185FA5', borderWidth:2, pointRadius:4, tension:0.35, fill:false },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, padding:14, font:{size:11}, color:MS_TICK } },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+    },
+    scales:{
+      x:{ grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}} },
+      y:{ grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}, callback:v=>v+'%'}, min:0 }
+    }
+  }
+});
+
+// 스택 바 차트
+const MS_BAR_CHANNELS = ['Company/Chain','Direct Sales','Tradeshow','Website','FashionGo','Faire','Other'];
+const MS_BAR_COLORS   = ['#534AB7','#7F77DD','#D85A30','#185FA5','#1D9E75','#BA7517','#C8C6BC'];
+
+new Chart('c-ms-bar', {
+  type: 'bar',
+  data: {
+    labels: MS_YEARS,
+    datasets: MS_BAR_CHANNELS.map((name, ci) => ({
+      label: name,
+      data: MS_YEARS.map((_,i) => {
+        const v = name === 'Other'
+          ? +((MS_RAW['Other'][i] + MS_RAW['Shopify'][i]) / MS_TOTALS[i] * 100).toFixed(1)
+          : msPct(name, i);
+        return v;
+      }),
+      backgroundColor: MS_BAR_COLORS[ci],
+      borderRadius: 3,
+      stack: 's',
+    }))
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'bottom', labels:{ boxWidth:10, padding:14, font:{size:11}, color:MS_TICK } },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+    },
+    scales:{
+      x:{ stacked:true, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}} },
+      y:{ stacked:true, grid:{color:MS_GRID}, ticks:{color:MS_TICK, font:{size:11}, callback:v=>v+'%'}, max:100 }
+    }
+  }
+});
+</script>
+
+<!-- PAGE 7: 채널 믹스 & 결제 방식 -->
+<div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">채널 믹스 & 결제 방식 분석</div>
+      <div class="page-sub">2021 – 2025 · Invoice 전체 기준 (Open+Closed) · Direct Sales = Showroom · MOTO · In-house (Non-Top50 바이어)</div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#534AB7"></span>Company/Chain (Top50)</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#7F77DD"></span>Direct Sales <span style="font-size:10px;color:#aaa;">(Showroom · MOTO · In-house)</span></div>
+      <div class="legend-item"><span class="legend-dot" style="background:#D85A30"></span>Tradeshow</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>FashionGo</div>
+      <div class="legend-item"><span class="legend-dot" style="background:#BA7517"></span>Faire</div>
+    </div>
+  </div>
+
+  <!-- 채널 스코어카드 -->
+  <div class="scorecard-row" style="grid-template-columns: repeat(5, minmax(0,1fr));">
+    <div class="scorecard">
+      <div class="sc-label">Company/Chain 1위</div>
+      <div class="sc-val" style="color:var(--big)">$376M</div>
+      <div class="sc-sub">2024 최고 · Top 50 대형 리테일러</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Direct Sales</div>
+      <div class="sc-val" style="color:#7F77DD">$254M</div>
+      <div class="sc-sub">2025 · Showroom · MOTO · In-house</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Faire 성장</div>
+      <div class="sc-val" style="color:var(--mid)">+621%<span class="sc-badge" style="background:var(--mid-light);color:var(--mid)">↑</span></div>
+      <div class="sc-sub">$6.4M(2021) → $46.3M(2025)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">FashionGo 변화</div>
+      <div class="sc-val" style="color:var(--small)">-27%<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓</span></div>
+      <div class="sc-sub">$92M(2023 최고) → $67M(2025)</div>
+    </div>
+    <div class="scorecard">
+      <div class="sc-label">Tradeshow 변화</div>
+      <div class="sc-val" style="color:var(--small)">-34%<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓</span></div>
+      <div class="sc-sub">$191M(2024) → $127M(2025)</div>
+    </div>
+  </div>
+
+  <!-- 섹션: 채널 믹스 트렌드 -->
+  <div class="section-divider">채널 믹스 트렌드 · Invoice 기준 (Open+Closed) · Direct Sales = Showroom · MOTO · In-house (Non-Top50)</div>
+
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">연도별 채널 매출 비중 (%)</div>
+      <div class="chart-desc">Company/Chain 1위(~29~32%) · Direct Sales 안정적 2위(~22%) · Faire 폭발 성장 · Tradeshow 2025 급감</div>
+      <div class="canvas-wrap" style="height:260px"><canvas id="c-ch-share"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">채널별 절대 매출 ($M)</div>
+      <div class="chart-desc">Company/Chain·Direct Sales 성장세 · Faire 급성장 · FashionGo 2023 이후 감소 · Tradeshow 2025 하락</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-ch-abs"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Marketplace 채널 성장 ($M)</div>
+      <div class="chart-desc">FashionGo 정체 vs Faire 급성장 — 플랫폼 트렌드 전환</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-ch-mkt"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 섹션: 결제 방식 분석 -->
+  <div class="section-divider">결제 방식 분석 — Tier별</div>
+
+  <!-- Invoice vs Paid 토글 -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+    <span style="font-size:12px;color:var(--text-secondary);">기준 선택:</span>
+    <button id="pay-toggle-inv" onclick="togglePayMode('invoiced')"
+      style="font-size:12px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--big);background:var(--big);color:#fff;cursor:pointer;font-weight:500;">
+      청구액 (Invoice)
+    </button>
+    <button id="pay-toggle-paid" onclick="togglePayMode('paid')"
+      style="font-size:12px;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text-secondary);cursor:pointer;">
+      수금액 (Paid)
+    </button>
+    <span id="pay-mode-desc" style="font-size:11px;color:var(--text-tertiary);margin-left:4px;">주문 발생 기준 청구 금액</span>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Big Buyer 결제 방식 ($M)</div>
+      <div class="chart-desc">CC 1위 · Wire·Check 비중 높음 · 2025 수금률 낮음 (NET 텀)</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-pay-big"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Mid Buyer 결제 방식 ($M)</div>
+      <div class="chart-desc">CC 압도적 1위 · FashionGo Pay 2위 · Faire Pay 성장</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-pay-mid"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Small Buyer 결제 방식 ($M)</div>
+      <div class="chart-desc">CC 1위 · FashionGo Pay 강세 · Faire Pay 2025 급성장</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-pay-small"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Tier별 CC 비율 vs 수금률 (%)</div>
+      <div class="chart-desc">CC 수금률 95~99% 안정 · Non-CC는 텀에 따라 수금률 차이 큼</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-pay-cc-pct"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 섹션: 수금률 분석 -->
+  <div class="section-divider">수금률 분석 — 청구액 대비 실제 수금</div>
+
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-title">결제 방식별 수금률 추이 (%)</div>
+      <div class="chart-desc">CC/FashionGo Pay는 95%+ 안정 · Wire/Check/Factor는 2025년 40~55%로 급락 (NET 텀 미수금)</div>
+      <div class="canvas-wrap" style="height:260px"><canvas id="c-collection-rate"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Big Buyer 미수금 ($M)</div>
+      <div class="chart-desc">2025년 Wire·Check·Factor 미수금 집중 — NET 텀 정상 미수 vs 연체 모니터링 필요</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-unpaid-big"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">결제 방식별 수금 속도 비교 (2025)</div>
+      <div class="chart-desc">CC·FashionGo Pay는 즉시 수금 · Wire/Check/Factor는 NET 텀 납기 미도래 포함 · ※ 2021~2024 CC 수금률은 99%+</div>
+      <div class="canvas-wrap" style="height:240px"><canvas id="c-collection-2025"></canvas></div>
+    </div>
+  </div>
+
+  <div class="footer" style="margin-top:32px;">데이터 기준: 2021.01.01 ~ 2025.12.31 · Invoice 전체(Open+Closed) · PaymentMethod 우선 → OrderChannel → Top 50 Customer명 보완 · INHOUSE/STORE/MOTO: Top50 → Company/Chain, Non-Top50 → Direct Sales · English Factory/Endless Rose → Other · 수금률 = PaidAmount / total</div>
+</div>
+
+<script>
+// ===== PAGE 7 DATA =====
+const CH_YEARS = ['2021','2022','2023','2024','2025'];
+const CH_DATA = {
+  'Company/Chain':    [296.826, 306.281, 339.386, 376.048, 344.992],
+  'Direct Sales': [224.056, 234.966, 246.484, 258.004, 253.958],
+  'Tradeshow':        [147.613, 172.368, 183.679, 190.798, 126.904],
+  'Website':          [91.930,  95.421,  99.257, 112.147, 113.364],
+  'FashionGo':        [70.602,  88.844,  91.657,  78.002,  66.702],
+  'Faire':            [6.419,   14.688,  17.500,  27.140,  46.273],
+  'Shopify':          [3.686,    3.723,   6.966,   1.893,   3.946],
+  'Other':            [186.824, 169.635, 146.280, 137.625, 176.171],
+};
+const CH_COLORS = {
+  'Company/Chain':    '#534AB7',
+  'Direct Sales': '#7F77DD',
+  'Tradeshow':        '#D85A30',
+  'Website':          '#185FA5',
+  'FashionGo':        '#1D9E75',
+  'Faire':            '#BA7517',
+  'Shopify':          '#96C13A',
+  'Other':            '#C8C6BC',
+};
+
+const CH_TOTALS = CH_YEARS.map((_,yi) =>
+  Object.values(CH_DATA).reduce((s, arr) => s + arr[yi], 0)
+);
+
+const CH_MAIN = ['Company/Chain','Direct Sales','Tradeshow','Website','FashionGo','Faire','Shopify','Other'];
+new Chart('c-ch-share', {
+  type: 'bar',
+  data: {
+    labels: CH_YEARS,
+    datasets: CH_MAIN.map(name => ({
+      label: name,
+      data: CH_YEARS.map((_,yi) => +(CH_DATA[name][yi] / CH_TOTALS[yi] * 100).toFixed(1)),
+      backgroundColor: CH_COLORS[name],
+      borderRadius: 3,
+      stack: 's',
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12, font: { size: 11 }, color: '#999' } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => v + '%' }, max: 100 }
+    }
+  }
+});
+
+new Chart('c-ch-abs', {
+  type: 'line',
+  data: {
+    labels: CH_YEARS,
+    datasets: CH_MAIN.filter(n => n !== 'Other').map(name => ({
+      label: name,
+      data: CH_DATA[name],
+      borderColor: CH_COLORS[name],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: CH_COLORS[name],
+      borderWidth: 2, pointRadius: 4, tension: 0.35,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10, font: { size: 10 }, color: '#999' } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.parsed.y.toFixed(1)}M` } }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => '$' + v + 'M' } }
+    }
+  }
+});
+
+new Chart('c-ch-mkt', {
+  type: 'line',
+  data: {
+    labels: CH_YEARS,
+    datasets: [
+      { label: 'FashionGo', data: CH_DATA['FashionGo'], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', pointBackgroundColor: '#1D9E75', borderWidth: 2.5, pointRadius: 5, tension: 0.35, fill: true },
+      { label: 'Faire',     data: CH_DATA['Faire'],     borderColor: '#BA7517', backgroundColor: 'rgba(186,117,23,0.08)',  pointBackgroundColor: '#BA7517', borderWidth: 2.5, pointRadius: 5, tension: 0.35, fill: true },
+      { label: 'Shopify',   data: CH_DATA['Shopify'],   borderColor: '#96C13A', backgroundColor: 'transparent', pointBackgroundColor: '#96C13A', borderWidth: 1.5, pointRadius: 4, tension: 0.35, borderDash: [4,3] },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 }, color: '#999' } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.parsed.y.toFixed(2)}M` } }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => '$' + v + 'M' } }
+    }
+  }
+});
+
+// ===== 결제 방식 데이터 =====
+const PAY_YEARS = ['2021','2022','2023','2024','2025'];
+const PAY_GROUPS = ['Credit Card','FashionGo Pay','Faire Pay','Check','Wire','ACH','Factor','Other'];
+const PAY_COLORS = {
+  'Credit Card':   '#534AB7',
+  'FashionGo Pay': '#1D9E75',
+  'Faire Pay':     '#BA7517',
+  'Check':         '#D85A30',
+  'Wire':          '#185FA5',
+  'ACH':           '#993556',
+  'Factor':        '#3B6D11',
+  'Other':         '#C8C6BC',
+};
+
+const PAY_INV = {
+  Big: {
+    'Credit Card':   [198.743,212.256,252.994,269.916,244.335],
+    'Check':         [96.606, 109.219,103.613,108.509, 93.369],
+    'Other':         [90.219,  78.738, 69.790, 66.864, 46.255],
+    'Factor':        [60.640,  47.294, 36.060, 32.201, 45.390],
+    'Wire':          [47.582,  71.265, 83.528,110.402,114.320],
+    'ACH':           [27.001,  22.809, 32.599, 31.663, 29.990],
+    'FashionGo Pay': [6.598,    6.704,  6.077,  3.917,  3.998],
+    'Faire Pay':     [0.036,    0.079,  0.141,  2.266,  3.071],
+  },
+  Mid: {
+    'Credit Card':   [213.625,226.681,229.004,244.780,245.900],
+    'FashionGo Pay': [20.402,  28.835, 33.352, 29.605, 25.195],
+    'Check':         [22.056,  22.240, 18.045, 16.179, 14.313],
+    'Other':         [20.026,  20.649, 21.152, 18.901, 15.650],
+    'Wire':          [4.132,    6.513,  7.754,  7.655,  7.365],
+    'Faire Pay':     [1.075,    2.654,  3.371,  6.335, 13.047],
+    'ACH':           [0.384,    0.695,  1.112,  1.990,  5.048],
+    'Factor':        [0.320,    0.724,  0.711,  0.819,  0.650],
+  },
+  Small: {
+    'Credit Card':   [144.175,141.223,139.524,141.329,135.702],
+    'FashionGo Pay': [34.929,  46.758, 47.602, 40.412, 33.569],
+    'Other':         [23.976,  21.161, 22.332, 20.583, 17.481],
+    'Check':         [7.724,    4.519,  3.266,  2.785,  2.318],
+    'Faire Pay':     [5.308,   11.955, 13.988, 18.539, 30.155],
+    'Wire':          [2.346,    2.859,  4.797,  4.589,  3.632],
+    'Factor':        [0.037,    0.077,  0.094,  0.123,  0.100],
+    'ACH':           [0.014,    0.022,  0.305,  1.297,  1.458],
+  }
+};
+
+const PAY_PAID = {
+  Big: {
+    'Credit Card':   [192.318,206.508,250.939,264.836,192.362],
+    'Check':         [96.222, 108.233,101.888,105.918, 38.140],
+    'Other':         [86.793,  73.198, 62.219, 66.398, 27.044],
+    'Factor':        [59.911,  46.003, 34.726, 28.823, 14.863],
+    'Wire':          [47.209,  71.160, 82.834,108.779, 53.886],
+    'ACH':           [13.230,  12.851, 26.702, 30.432, 11.275],
+    'FashionGo Pay': [6.582,    6.697,  6.061,  3.866,  2.669],
+    'Faire Pay':     [0.036,    0.078,  0.135,  2.248,  1.461],
+  },
+  Mid: {
+    'Credit Card':   [213.119,226.327,228.064,243.599,233.990],
+    'FashionGo Pay': [20.323,  28.774, 33.245, 29.369, 21.685],
+    'Check':         [21.709,  21.573, 17.569, 15.502,  7.637],
+    'Other':         [19.867,  20.459, 20.928, 18.688, 13.260],
+    'Wire':          [4.123,    6.474,  7.610,  7.556,  4.950],
+    'Faire Pay':     [1.055,    2.622,  3.335,  6.164,  6.660],
+    'ACH':           [0.286,    0.486,  0.859,  1.621,  2.911],
+    'Factor':        [0.318,    0.662,  0.589,  0.725,  0.276],
+  },
+  Small: {
+    'Credit Card':   [144.028,141.036,139.238,140.869,130.600],
+    'FashionGo Pay': [34.848,  46.651, 47.456, 40.115, 28.820],
+    'Other':         [23.818,  20.984, 22.216, 20.480, 15.480],
+    'Check':         [7.680,    4.471,  3.222,  2.715,  1.160],
+    'Faire Pay':     [5.221,   11.780, 13.761, 17.959, 16.527],
+    'Wire':          [2.323,    2.830,  4.770,  4.565,  1.973],
+    'Factor':        [0.037,    0.077,  0.093,  0.120,  0.053],
+    'ACH':           [0.003,    0.022,  0.292,  1.294,  1.188],
+  }
+};
+
+let payMode = 'invoiced';
+let payCharts = {};
+
+function togglePayMode(mode) {
+  payMode = mode;
+  const invBtn = document.getElementById('pay-toggle-inv');
+  const paidBtn = document.getElementById('pay-toggle-paid');
+  const desc = document.getElementById('pay-mode-desc');
+  if (mode === 'invoiced') {
+    invBtn.style.background = 'var(--big)'; invBtn.style.color = '#fff'; invBtn.style.borderColor = 'var(--big)';
+    paidBtn.style.background = 'transparent'; paidBtn.style.color = 'var(--text-secondary)'; paidBtn.style.borderColor = 'var(--border)';
+    desc.textContent = '주문 발생 기준 청구 금액';
+  } else {
+    paidBtn.style.background = 'var(--big)'; paidBtn.style.color = '#fff'; paidBtn.style.borderColor = 'var(--big)';
+    invBtn.style.background = 'transparent'; invBtn.style.color = 'var(--text-secondary)'; invBtn.style.borderColor = 'var(--border)';
+    desc.textContent = '실제 수금된 금액 (PaidAmount 기준)';
+  }
+  ['Big','Mid','Small'].forEach(tier => rebuildPayChart(tier));
+}
+
+function getPayData(tier) {
+  return payMode === 'invoiced' ? PAY_INV[tier] : PAY_PAID[tier];
+}
+
+function rebuildPayChart(tier) {
+  const id = 'c-pay-' + tier.toLowerCase();
+  if (payCharts[tier]) { payCharts[tier].destroy(); }
+  const d = getPayData(tier);
+  payCharts[tier] = new Chart(id, {
+    type: 'bar',
+    data: {
+      labels: PAY_YEARS,
+      datasets: PAY_GROUPS.map(g => ({
+        label: g,
+        data: d[g] || [0,0,0,0,0],
+        backgroundColor: PAY_COLORS[g],
+        borderRadius: 3, stack: 's',
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 10 }, color: '#999' } },
+        tooltip: { callbacks: { label: c => ` ${c.dataset.label}: $${c.parsed.y.toFixed(1)}M` } }
+      },
+      scales: {
+        x: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+        y: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => '$' + v + 'M' } }
+      }
+    }
+  });
+}
+
+['Big','Mid','Small'].forEach(tier => rebuildPayChart(tier));
+
+function ccPct(tier, yi) {
+  const d = PAY_INV[tier];
+  const total = Object.values(d).reduce((s, arr) => s + arr[yi], 0);
+  return total > 0 ? +((d['Credit Card'][yi] / total) * 100).toFixed(1) : 0;
+}
+new Chart('c-pay-cc-pct', {
+  type: 'line',
+  data: {
+    labels: PAY_YEARS,
+    datasets: [
+      { label:'Big Buyer CC%',   data:PAY_YEARS.map((_,i)=>ccPct('Big',i)),   borderColor:'#534AB7', backgroundColor:'rgba(83,74,183,0.08)',  pointBackgroundColor:'#534AB7', borderWidth:2.5, pointRadius:5, tension:0.35 },
+      { label:'Mid Buyer CC%',   data:PAY_YEARS.map((_,i)=>ccPct('Mid',i)),   borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.08)', pointBackgroundColor:'#1D9E75', borderWidth:2.5, pointRadius:5, tension:0.35 },
+      { label:'Small Buyer CC%', data:PAY_YEARS.map((_,i)=>ccPct('Small',i)), borderColor:'#D85A30', backgroundColor:'rgba(216,90,48,0.08)',  pointBackgroundColor:'#D85A30', borderWidth:2.5, pointRadius:5, tension:0.35, borderDash:[4,3] },
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{position:'top',labels:{boxWidth:10,font:{size:11},color:'#999'}}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}} },
+    scales:{ x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11}}}, y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11},callback:v=>v+'%'},min:0,max:80} }
+  }
+});
+
+const COLL_METHODS = ['Credit Card','FashionGo Pay','Wire','Check','ACH','Factor','Faire Pay'];
+const COLL_COLORS  = ['#534AB7','#1D9E75','#185FA5','#D85A30','#993556','#3B6D11','#BA7517'];
+
+function collRate(method, yi) {
+  let inv = 0, paid = 0;
+  ['Big','Mid','Small'].forEach(t => {
+    inv  += (PAY_INV[t][method]  || [0,0,0,0,0])[yi];
+    paid += (PAY_PAID[t][method] || [0,0,0,0,0])[yi];
+  });
+  return inv > 0 ? +(paid/inv*100).toFixed(1) : 0;
+}
+
+new Chart('c-collection-rate', {
+  type:'line',
+  data:{
+    labels: PAY_YEARS,
+    datasets: COLL_METHODS.map((m,i) => ({
+      label: m,
+      data: PAY_YEARS.map((_,yi) => collRate(m, yi)),
+      borderColor: COLL_COLORS[i],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: COLL_COLORS[i],
+      borderWidth: 2, pointRadius: 4, tension: 0.35,
+      borderDash: ['Wire','Check','ACH','Factor'].includes(m) ? [4,3] : [],
+    }))
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:10},color:'#999'}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%`}}
+    },
+    scales:{
+      x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11}}},
+      y:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11},callback:v=>v+'%'},min:0,max:100}
+    }
+  }
+});
+
+const unpaidMethods = ['Wire','Check','Factor','ACH','Credit Card','Faire Pay','FashionGo Pay'];
+new Chart('c-unpaid-big', {
+  type:'bar',
+  data:{
+    labels: PAY_YEARS,
+    datasets: unpaidMethods.map((m,i) => ({
+      label: m,
+      data: PAY_YEARS.map((_,yi) => {
+        const inv  = (PAY_INV.Big[m]  || [0,0,0,0,0])[yi];
+        const paid = (PAY_PAID.Big[m] || [0,0,0,0,0])[yi];
+        return +(inv - paid).toFixed(3);
+      }),
+      backgroundColor: PAY_COLORS[m],
+      borderRadius: 3, stack: 's',
+    }))
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{boxWidth:10,padding:8,font:{size:10},color:'#999'}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${c.parsed.y.toFixed(1)}M 미수`}}
+    },
+    scales:{
+      x:{stacked:true,grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11}}},
+      y:{stacked:true,grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11},callback:v=>'$'+v+'M'}}
+    }
+  }
+});
+
+const methods2025 = ['Credit Card','FashionGo Pay','Faire Pay','ACH','Wire','Check','Factor'];
+const rates2025 = methods2025.map(m => collRate(m, 4));
+new Chart('c-collection-2025', {
+  type:'bar',
+  data:{
+    labels: methods2025,
+    datasets:[{
+      label:'2025 수금률',
+      data: rates2025,
+      backgroundColor: rates2025.map(r => r >= 95 ? '#1D9E75' : r >= 80 ? '#BA7517' : '#D85A30'),
+      borderRadius: 4,
+    }]
+  },
+  options:{
+    indexAxis:'y',
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>` ${c.parsed.x.toFixed(1)}%`}}
+    },
+    scales:{
+      x:{grid:{color:'rgba(0,0,0,0.06)'},ticks:{color:'#999',font:{size:11},callback:v=>v+'%'},min:0,max:100},
+      y:{grid:{display:false},ticks:{color:'#333',font:{size:11}}}
+    }
+  }
+});
+</script>
+
+</body>
+</html>
