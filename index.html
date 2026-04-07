@@ -34,6 +34,37 @@
     padding: 32px 24px 60px;
   }
 
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,246,243,0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 24px;
+    margin: 0 -24px 20px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-btn:hover { background: var(--surface); border-color: var(--border); color: var(--text-primary); }
+  .nav-btn.active { background: var(--big); color: #fff; }
+
   .page-header {
     margin-bottom: 32px;
     display: flex;
@@ -138,252 +169,19 @@
   </div>
 </div>
 
-<!-- Scorecards -->
-<div class="scorecard-row">
-  <div class="scorecard">
-    <div class="sc-label">전체 누적 매출 (5년)</div>
-    <div class="sc-val">$5.6B</div>
-    <div class="sc-sub">2021~2025 합산</div>
-  </div>
-  <div class="scorecard">
-    <div class="sc-label">Big Buyer 매출 비중</div>
-    <div class="sc-val" style="color:var(--big)">~50%<span class="sc-badge" style="background:var(--big-light);color:var(--big)">→ 안정</span></div>
-    <div class="sc-sub">연평균 $100K+ · 802명(2025) · 전체 고객의 0.7%</div>
-  </div>
-  <div class="scorecard">
-    <div class="sc-label">Small Buyer 고객 수 변화</div>
-    <div class="sc-val" style="color:var(--small)">-16%<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓ 감소</span></div>
-    <div class="sc-sub">131,201명 → 110,903명</div>
-  </div>
-  <div class="scorecard">
-    <div class="sc-label">Mid Buyer 주문 빈도 변화</div>
-    <div class="sc-val" style="color:var(--mid)">36→34<span class="sc-badge" style="background:var(--mid-light);color:var(--mid)">→ 안정</span></div>
-    <div class="sc-sub">연 34~36회 안정적 유지</div>
-  </div>
-  <div class="scorecard">
-    <div class="sc-label">Big vs Small 지출 격차</div>
-    <div class="sc-val">315x</div>
-    <div class="sc-sub">$700K vs $2,227 (2025) · 315배 차이</div>
-  </div>
-</div>
+<nav class="sticky-nav" id="main-nav">
+  <button class="nav-btn active" onclick="navTo('sec-sim')">📊 Tier 시뮬레이터</button>
+  <button class="nav-btn" onclick="navTo('sec-overview')">📈 매출 트렌드</button>
+  <button class="nav-btn" onclick="navTo('sec-health')">👥 고객 건강도</button>
+  <button class="nav-btn" onclick="navTo('sec-order')">🛒 주문 행동</button>
+  <button class="nav-btn" onclick="navTo('sec-concentration')">🎯 매출 집중도</button>
+  <button class="nav-btn" onclick="navTo('sec-churn')">📉 이탈률</button>
+  <button class="nav-btn" onclick="navTo('sec-bigbuyer')">🏆 Big Buyer 고객사</button>
+  <button class="nav-btn" onclick="navTo('sec-top50')">📋 Top 50 고객사</button>
+  <button class="nav-btn" onclick="navTo('sec-methodology')">📋 분류 방법론</button>
+</nav>
 
-<!-- Section 1: Revenue -->
-<div class="section-divider">매출 트렌드</div>
-
-<div class="charts-grid">
-  <div class="chart-card chart-full">
-    <div class="chart-title">연도별 Tier 매출 비중 (%)</div>
-    <div class="chart-desc">5년 연평균 기준 고정 Tier별 비중 · Big ~50% / Mid ~28% / Small ~22% — 집중도 차트(구매액 순위 기준)와 다름</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-share"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">절대 매출 ($M)</div>
-    <div class="chart-desc">Big Buyer 매출 성장세 vs Mid/Small 정체</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-revenue"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">고객당 평균 연간 지출액 ($)</div>
-    <div class="chart-desc">Big vs Small 격차 확대 추세</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-spend"></canvas></div>
-  </div>
-</div>
-
-<!-- Section 2: Customers -->
-<div class="section-divider">고객 건강도</div>
-
-<div class="charts-grid">
-  <div class="chart-card">
-    <div class="chart-title">활성 고객 수</div>
-    <div class="chart-desc">Small Buyer 고객 수 5년간 -15% 감소</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-customers"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">신규 고객 수</div>
-    <div class="chart-desc">Small 신규 유입 2021년 90K → 2025년 49K로 감소 · Big 신규는 사실상 소멸(139→24명)</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-new"></canvas></div>
-  </div>
-
-  <div class="chart-card">
-    <div class="chart-title">연간 주문 빈도 (회/고객)</div>
-    <div class="chart-desc">Mid Buyer 2022년 급락 후 부분 회복 중</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-freq"></canvas></div>
-  </div>
-</div>
-
-<!-- Section 3: Order Behavior -->
-<div class="section-divider">주문 행동</div>
-
-<div class="charts-grid">
-  <div class="chart-card">
-    <div class="chart-title">평균 주문액 AOV ($)</div>
-    <div class="chart-desc">Small AOV 꾸준히 상승 — 덜 사지만 살 때 더 쓰는 패턴</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">총 주문 건수</div>
-    <div class="chart-desc">Small Buyer 주문 건수 최다 — 단, 소액 주문 · Big Buyer는 건수 적지만 고단가(AOV $1,200+)로 매출 압도</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-orders"></canvas></div>
-  </div>
-</div>
-
-<!-- Insights -->
-<div class="section-divider">핵심 인사이트</div>
-
-<div class="insight-row">
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Big Buyer</div>
-    <p>전체 매출의 약 49~51% 차지. Mid(28%)·Small(22%)과 균형잡힌 구조. 고객당 연평균 $700K+ 지출로 충성도 높음. 2025년 소폭 감소(-7%) 모니터링 필요.</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Mid Buyer</div>
-    <p>2022년 주문 빈도 급락 이후 부분 회복 중. 고객 수는 안정적이나 1인당 지출 정체. 주문빈도 38~40회로 Big 대비 안정적인 구조.</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Small Buyer</div>
-    <p>고객 수 -15%, 신규 유입 -45% — 시장 축소 추세. 그러나 생존 고객의 AOV($361→$411)와 1인당 지출은 꾸준히 상승 중. 이탈 방지가 핵심 과제.</p>
-  </div>
-</div>
-
-<div class="footer">데이터 기준: 2021.01.01 ~ 2025.12.31 · quick-woodland-463404-n5.nvlt.INVOICE</div>
-
-<!-- Section 4: Concentration -->
-<div class="section-divider">매출 집중도 (연도별 구매액 순위 기준 — Tier 고정과 별개)</div>
-
-<div class="charts-grid">
-  <div class="chart-card chart-full">
-    <div class="chart-title">매출 집중도 — Top 1% / Top 1~10% / Top 10~50% / Bottom 50% (%)</div>
-    <div class="chart-desc">연도별 실제 구매액 순위 기준 · 상위 1%가 55~57%, 상위 10%가 81~83% 담당 — Tier 고정 기준(위 차트)과 달리 매년 재계산</div>
-    <div class="canvas-wrap" style="height:240px"><canvas id="c-concentration"></canvas></div>
-  </div>
-</div>
-
-<!-- Section 5: New vs Retained Revenue -->
-<div class="section-divider">신규 vs 유지 고객 매출 비율</div>
-
-<div class="charts-grid">
-  <div class="chart-card">
-    <div class="chart-title">Big Buyer — 신규 vs 유지 매출 (%)</div>
-    <div class="chart-desc">신규 고객 비중 8% → 3% 수준으로 감소 — 기존 고객 의존도 심화</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-big"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">Mid Buyer — 신규 vs 유지 매출 (%)</div>
-    <div class="chart-desc">신규 고객 비중 14% → 7% 수준으로 감소 — 유지 고객 비중 꾸준히 확대</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-mid"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">Small Buyer — 신규 vs 유지 매출 (%)</div>
-    <div class="chart-desc">신규 고객 비중 52% → 45%로 여전히 높음 — 유지율이 타 Tier 대비 낮음</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-small"></canvas></div>
-  </div>
-</div>
-
-<!-- Section 6: Seasonality -->
-<div class="section-divider">분기별 계절성</div>
-
-<div class="charts-grid">
-  <div class="chart-card chart-full">
-    <div class="chart-title">분기별 매출 ($M) — Tier별</div>
-    <div class="chart-desc">Q3가 전반적으로 가장 강하고 Q4는 Big Buyer 중심으로 하락하는 패턴</div>
-    <div class="canvas-wrap" style="height:260px"><canvas id="c-seasonal"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">분기별 Big Buyer AOV ($)</div>
-    <div class="chart-desc">Q1이 가장 높고 Q2가 가장 낮은 일관된 패턴</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov-seasonal"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">분기별 활성 고객 수 — Small Buyer</div>
-    <div class="chart-desc">Small Buyer Q1~Q3 감소 추세 뚜렷, 매년 반복</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-small-seasonal"></canvas></div>
-  </div>
-</div>
-
-<!-- Section: Churn -->
-<div class="section-divider">이탈률 (Churn Rate)</div>
-
-<div class="charts-grid">
-  <div class="chart-card chart-full">
-    <div class="chart-title">연도별 Tier별 이탈률 (%)</div>
-    <div class="chart-desc">Small Buyer 이탈률 50%+ 고착 — 10명 중 5명이 다음 해 구매 안 함. Big 이탈률도 상승 추세</div>
-    <div class="canvas-wrap" style="height:240px"><canvas id="c-churn-rate"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">이탈 고객 수 (절대값)</div>
-    <div class="chart-desc">Small Buyer 이탈 절대 수가 압도적 — 연 6~7만명 수준</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-abs"></canvas></div>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">Big Buyer 이탈률 추이 (%)</div>
-    <div class="chart-desc">3.3% → 8.1% → 5.8% → 7.2% — 등락 있지만 전반적 상승 추세</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-big"></canvas></div>
-  </div>
-</div>
-
-<!-- Section: Tier 이동 분석 -->
-<div class="section-divider">5년 고정 Tier vs 실제 구매 행동</div>
-
-<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;">
-  <div class="chart-card" style="border-left:3px solid var(--big);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
-    <div class="chart-title" style="color:var(--big);margin-bottom:8px;">Big Buyer 구매 변동</div>
-    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
-      연평균 $100K+ 기준 Big 1,171명 중 <strong style="color:var(--text-primary);">68.8%가 매년 구매 규모가 달라집니다.</strong>
-      어떤 해엔 $100K 이상, 다른 해엔 $10K~$100K 수준으로 출렁이는 패턴입니다.
-      단, 매출 기준으로는 Big처럼 구매한 고객이 전체의 76~79%를 담당 — 매출 분석의 신뢰도는 유지됩니다.
-    </p>
-  </div>
-  <div class="chart-card" style="border-left:3px solid var(--mid);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
-    <div class="chart-title" style="color:var(--mid);margin-bottom:8px;">Mid Buyer 구매 변동</div>
-    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
-      연평균 $10K~$100K 기준 Mid 16,506명 중 <strong style="color:var(--text-primary);">82.4%가 연도별 변동 있음.</strong>
-      매년 $10K를 꾸준히 채우는 안정적 Mid는 약 2,905명 수준입니다.
-      나머지는 좋은 해와 나쁜 해가 교차하는 패턴으로, Big 잠재군과 Small 위험군이 혼재합니다.
-    </p>
-  </div>
-  <div class="chart-card" style="border-left:3px solid var(--small);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
-    <div class="chart-title" style="color:var(--small);margin-bottom:8px;">Small Buyer 구매 변동</div>
-    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
-      연평균 $10K 미만 Small 337,010명 중 <strong style="color:var(--text-primary);">93.2%가 연도별 변동 있음.</strong>
-      5년 내내 Small로 고정된 고객은 22,825명(6.8%)에 불과합니다.
-      대부분은 구매한 해와 구매하지 않은 해가 반복되는 비정기 구매 패턴입니다.
-    </p>
-  </div>
-</div>
-
-<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px 18px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary);line-height:1.7;">
-  <strong style="color:var(--color-text-primary);">분석 신뢰도 노트</strong> — 연도별 구매 변동은 "데이터 오류"가 아니라 실제 마켓의 특성입니다. 리테일러들은 시즌, 재고 상황, 트렌드에 따라 구매 규모가 매년 달라지는 것이 일반적입니다. 본 대시보드의 Tier는 5년 연평균 기준으로 고정되어 있어 트렌드 비교에는 일관성을 유지하지만, 특정 연도의 개별 고객 행동 분석에는 연도별 실제 구매액을 함께 참고하는 것을 권장합니다.
-</div>
-
-<!-- Section: Big→Small 심층 분석 -->
-<div class="section-divider">Big Buyer 이탈 심층 분석</div>
-
-<div class="charts-grid">
-  <div class="chart-card">
-    <div class="chart-title">Big→Small 이탈 시점 분포</div>
-    <div class="chart-desc">매년 이탈 고객 수 증가 — 2025년 160명으로 최고치</div>
-    <div class="canvas-wrap" style="height:220px"><canvas id="c-drop-timing"></canvas></div>
-  </div>
-
-</div>
-
-<!-- Updated Insights -->
-<div class="section-divider">핵심 인사이트</div>
-
-<div class="insight-row">
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Big Buyer</div>
-    <p>연평균 $100K+ 구매 고객 802명이 전체 매출의 ~50% 담당. 고객당 연평균 $700K 지출. 신규 유입 사실상 없음(24명/년) — 기존 고객 유지가 전부. 이탈률 상승 추세로 관리 필요.</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Mid Buyer</div>
-    <p>연평균 $10K~$100K 구매 11,150명이 매출의 ~29% 담당. 주문빈도 38~40회로 안정적. 유지 고객 비중 93%로 충성도 높음. Big으로 성장 가능성 있는 핵심 육성 그룹.</p>
-  </div>
-  <div class="insight-card">
-    <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Small Buyer</div>
-    <p>연평균 $10K 미만 110,903명이 매출의 ~22% 담당. 이탈률 50%+로 매년 절반이 이탈. Small AOV($361→$411) 꾸준히 상승 중. 신규 고객 의존도가 타 Tier 대비 여전히 높음.</p>
-  </div>
-</div>
-
+<div id="sec-sim"></div>
 <!-- PAGE 1: Tier 기준 시뮬레이터 -->
 <div style="margin-top:0px;">
 
@@ -423,8 +221,8 @@
           <button onclick="setSimYear(0)" id="sybtn-0" class="sim-btn">2021</button>
           <button onclick="setSimYear(1)" id="sybtn-1" class="sim-btn">2022</button>
           <button onclick="setSimYear(2)" id="sybtn-2" class="sim-btn">2023</button>
-          <button onclick="setSimYear(3)" id="sybtn-3" class="sim-btn active">2024</button>
-          <button onclick="setSimYear(4)" id="sybtn-4" class="sim-btn">2025</button>
+          <button onclick="setSimYear(3)" id="sybtn-3" class="sim-btn">2024</button>
+          <button onclick="setSimYear(4)" id="sybtn-4" class="sim-btn active">2025</button>
         </div>
       </div>
     </div>
@@ -516,6 +314,239 @@
   </div>
 </div>
 
+<!-- Scorecards -->
+<div class="scorecard-row">
+  <div class="scorecard">
+    <div class="sc-label">전체 누적 매출 (5년)</div>
+    <div class="sc-val">$5.6B</div>
+    <div class="sc-sub">2021~2025 합산</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Big Buyer 매출 비중</div>
+    <div class="sc-val" style="color:var(--big)">~50%<span class="sc-badge" style="background:var(--big-light);color:var(--big)">→ 안정</span></div>
+    <div class="sc-sub">연평균 $100K+ · 802명(2025) · 전체 고객의 0.7%</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Small Buyer 고객 수 변화</div>
+    <div class="sc-val" style="color:var(--small)">-16%<span class="sc-badge" style="background:var(--small-light);color:var(--small)">↓ 감소</span></div>
+    <div class="sc-sub">131,201명 → 110,903명</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Mid Buyer 주문 빈도 변화</div>
+    <div class="sc-val" style="color:var(--mid)">36→34<span class="sc-badge" style="background:var(--mid-light);color:var(--mid)">→ 안정</span></div>
+    <div class="sc-sub">연 34~36회 안정적 유지</div>
+  </div>
+  <div class="scorecard">
+    <div class="sc-label">Big vs Small 지출 격차</div>
+    <div class="sc-val">315x</div>
+    <div class="sc-sub">$700K vs $2,227 (2025) · 315배 차이</div>
+  </div>
+</div>
+
+<div id="sec-overview"></div>
+<!-- Section 1: Revenue -->
+<div class="section-divider">매출 트렌드</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">연도별 Tier 매출 비중 (%)</div>
+    <div class="chart-desc">5년 연평균 기준 고정 Tier별 비중 · Big ~50% / Mid ~28% / Small ~22% — 집중도 차트(구매액 순위 기준)와 다름</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-share"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">절대 매출 ($M)</div>
+    <div class="chart-desc">Big Buyer 매출 성장세 vs Mid/Small 정체</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-revenue"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">고객당 평균 연간 지출액 ($)</div>
+    <div class="chart-desc">Big vs Small 격차 확대 추세</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-spend"></canvas></div>
+  </div>
+</div>
+
+<div id="sec-health"></div>
+<!-- Section 2: Customers -->
+<div class="section-divider">고객 건강도</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">활성 고객 수</div>
+    <div class="chart-desc">Small Buyer 고객 수 5년간 -15% 감소</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-customers"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">신규 고객 수</div>
+    <div class="chart-desc">Small 신규 유입 2021년 90K → 2025년 49K로 감소 · Big 신규는 사실상 소멸(139→24명)</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-new"></canvas></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">연간 주문 빈도 (회/고객)</div>
+    <div class="chart-desc">Mid Buyer 2022년 급락 후 부분 회복 중</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-freq"></canvas></div>
+  </div>
+</div>
+
+<div id="sec-order"></div>
+<!-- Section 3: Order Behavior -->
+<div class="section-divider">주문 행동</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">평균 주문액 AOV ($)</div>
+    <div class="chart-desc">Small AOV 꾸준히 상승 — 덜 사지만 살 때 더 쓰는 패턴</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">총 주문 건수</div>
+    <div class="chart-desc">Small Buyer 주문 건수 최다 — 단, 소액 주문 · Big Buyer는 건수 적지만 고단가(AOV $1,200+)로 매출 압도</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-orders"></canvas></div>
+  </div>
+</div>
+
+<div id="sec-concentration"></div>
+<!-- Section 4: Concentration -->
+<div class="section-divider">매출 집중도 (연도별 구매액 순위 기준 — Tier 고정과 별개)</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">매출 집중도 — Top 1% / Top 1~10% / Top 10~50% / Bottom 50% (%)</div>
+    <div class="chart-desc">연도별 실제 구매액 순위 기준 · 상위 1%가 55~57%, 상위 10%가 81~83% 담당 — Tier 고정 기준(위 차트)과 달리 매년 재계산</div>
+    <div class="canvas-wrap" style="height:240px"><canvas id="c-concentration"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 5: New vs Retained Revenue -->
+<div class="section-divider">신규 vs 유지 고객 매출 비율</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">Big Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 고객 비중 8% → 3% 수준으로 감소 — 기존 고객 의존도 심화</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-big"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Mid Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 고객 비중 14% → 7% 수준으로 감소 — 유지 고객 비중 꾸준히 확대</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-mid"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Small Buyer — 신규 vs 유지 매출 (%)</div>
+    <div class="chart-desc">신규 고객 비중 52% → 45%로 여전히 높음 — 유지율이 타 Tier 대비 낮음</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-rev-small"></canvas></div>
+  </div>
+</div>
+
+<!-- Section 6: Seasonality -->
+<div class="section-divider">분기별 계절성</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">분기별 매출 ($M) — Tier별</div>
+    <div class="chart-desc">Q3가 전반적으로 가장 강하고 Q4는 Big Buyer 중심으로 하락하는 패턴</div>
+    <div class="canvas-wrap" style="height:260px"><canvas id="c-seasonal"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">분기별 Big Buyer AOV ($)</div>
+    <div class="chart-desc">Q1이 가장 높고 Q2가 가장 낮은 일관된 패턴</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-aov-seasonal"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">분기별 활성 고객 수 — Small Buyer</div>
+    <div class="chart-desc">Small Buyer Q1~Q3 감소 추세 뚜렷, 매년 반복</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-small-seasonal"></canvas></div>
+  </div>
+</div>
+
+<div id="sec-churn"></div>
+<!-- Section: Churn -->
+<div class="section-divider">이탈률 (Churn Rate)</div>
+
+<div class="charts-grid">
+  <div class="chart-card chart-full">
+    <div class="chart-title">연도별 Tier별 이탈률 (%)</div>
+    <div class="chart-desc">Small Buyer 이탈률 50%+ 고착 — 10명 중 5명이 다음 해 구매 안 함. Big 이탈률도 상승 추세 · 2025 이탈률은 내년 집계 후 업데이트 예정</div>
+    <div class="canvas-wrap" style="height:240px"><canvas id="c-churn-rate"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">이탈 고객 수 (절대값)</div>
+    <div class="chart-desc">Small Buyer 이탈 절대 수가 압도적 — 연 6~7만명 수준</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-abs"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Big Buyer 이탈률 추이 (%)</div>
+    <div class="chart-desc">3.3% → 8.1% → 5.8% → 7.2% — 등락 있지만 전반적 상승 추세</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-churn-big"></canvas></div>
+  </div>
+</div>
+
+<!-- Section: Tier 이동 분석 -->
+<div class="section-divider">5년 고정 Tier vs 실제 구매 행동</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;">
+  <div class="chart-card" style="border-left:3px solid var(--big);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--big);margin-bottom:8px;">Big Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $100K+ 기준 Big 1,171명 중 <strong style="color:var(--text-primary);">68.8%가 매년 구매 규모가 달라집니다.</strong>
+      어떤 해엔 $100K 이상, 다른 해엔 $10K~$100K 수준으로 출렁이는 패턴입니다.
+      단, 매출 기준으로는 Big처럼 구매한 고객이 전체의 76~79%를 담당 — 매출 분석의 신뢰도는 유지됩니다.
+    </p>
+  </div>
+  <div class="chart-card" style="border-left:3px solid var(--mid);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--mid);margin-bottom:8px;">Mid Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $10K~$100K 기준 Mid 16,506명 중 <strong style="color:var(--text-primary);">82.4%가 연도별 변동 있음.</strong>
+      매년 $10K를 꾸준히 채우는 안정적 Mid는 약 2,905명 수준입니다.
+      나머지는 좋은 해와 나쁜 해가 교차하는 패턴으로, Big 잠재군과 Small 위험군이 혼재합니다.
+    </p>
+  </div>
+  <div class="chart-card" style="border-left:3px solid var(--small);border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0;">
+    <div class="chart-title" style="color:var(--small);margin-bottom:8px;">Small Buyer 구매 변동</div>
+    <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">
+      연평균 $10K 미만 Small 337,010명 중 <strong style="color:var(--text-primary);">93.2%가 연도별 변동 있음.</strong>
+      5년 내내 Small로 고정된 고객은 22,825명(6.8%)에 불과합니다.
+      대부분은 구매한 해와 구매하지 않은 해가 반복되는 비정기 구매 패턴입니다.
+    </p>
+  </div>
+</div>
+
+<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px 18px;margin-bottom:8px;font-size:12px;color:var(--color-text-secondary);line-height:1.7;">
+  <strong style="color:var(--color-text-primary);">분석 신뢰도 노트</strong> — 연도별 구매 변동은 "데이터 오류"가 아니라 실제 마켓의 특성입니다. 리테일러들은 시즌, 재고 상황, 트렌드에 따라 구매 규모가 매년 달라지는 것이 일반적입니다. 본 대시보드의 Tier는 5년 연평균 기준으로 고정되어 있어 트렌드 비교에는 일관성을 유지하지만, 특정 연도의 개별 고객 행동 분석에는 연도별 실제 구매액을 함께 참고하는 것을 권장합니다.
+</div>
+
+<!-- Section: Big→Small 심층 분석 -->
+<div class="section-divider">Big Buyer 이탈 심층 분석</div>
+
+<div class="charts-grid">
+  <div class="chart-card">
+    <div class="chart-title">Big→Small 이탈 시점 분포</div>
+    <div class="chart-desc">매년 이탈 고객 수 증가 — 2025년 160명으로 최고치</div>
+    <div class="canvas-wrap" style="height:220px"><canvas id="c-drop-timing"></canvas></div>
+  </div>
+
+</div>
+
+<!-- Updated Insights -->
+<div class="section-divider">핵심 인사이트</div>
+
+<div class="insight-row">
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--big-light);color:var(--big)">Big Buyer</div>
+    <p>연평균 $100K+ 구매 고객 802명이 전체 매출의 ~50% 담당. 고객당 연평균 $700K 지출. 신규 유입 사실상 없음(24명/년) — 기존 고객 유지가 전부. 이탈률 상승 추세로 관리 필요.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--mid-light);color:var(--mid)">Mid Buyer</div>
+    <p>연평균 $10K~$100K 구매 11,150명이 매출의 ~29% 담당. 주문빈도 38~40회로 안정적. 유지 고객 비중 93%로 충성도 높음. Big으로 성장 가능성 있는 핵심 육성 그룹.</p>
+  </div>
+  <div class="insight-card">
+    <div class="insight-tag" style="background:var(--small-light);color:var(--small)">Small Buyer</div>
+    <p>연평균 $10K 미만 110,903명이 매출의 ~22% 담당. 이탈률 50%+로 매년 절반이 이탈. Small AOV($361→$411) 꾸준히 상승 중. 신규 고객 의존도가 타 Tier 대비 여전히 높음.</p>
+  </div>
+</div>
+
+
+
 <style>
 .sim-btn {
   padding: 6px 12px;
@@ -531,6 +562,20 @@
 }
 .sim-btn:hover { border-color: var(--big); color: var(--big); }
 .sim-btn.active { background: var(--big); color: #fff; border-color: var(--big); }
+.tab {
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tab:hover { border-color: var(--big); color: var(--big); }
+.tab.active { background: var(--big); color: #fff; border-color: var(--big); }
 </style>
 
 <script>
@@ -667,7 +712,7 @@ function isValidCombo(big, sml) { return big > sml; }
 let simShareChart = null, simCustChart = null, simRevChart = null;
 let currentBig   = 1000000;  // 디폴트 $1M
 let currentSmall = 50000;    // 디폴트 $50K
-let currentSimYear = 3;      // 디폴트 2024
+let currentSimYear = 4;      // 디폴트 2025
 
 function fmt(n) { return n.toLocaleString(); }
 function fmtK(n) { return n >= 1000 ? (n/1000).toFixed(0)+'K' : n; }
@@ -820,7 +865,7 @@ function renderSim() {
     const isSelected = i === yi;
     const rowBg = isSelected ? 'background:rgba(83,74,183,0.06);' : '';
     const fontW = isSelected ? 'font-weight:700;' : '';
-    return `<tr style="border-bottom:0.5px solid var(--border);${rowBg}" onmouseover="this.style.background='#F0EFF0'" onmouseout="this.style.background='${isSelected?'rgba(83,74,183,0.06)':''}'">'
+    return `<tr style="border-bottom:0.5px solid var(--border);${rowBg}" onmouseover="this.style.background='#F0EFF0'" onmouseout="this.style.background='${isSelected?'rgba(83,74,183,0.06)':''}'">
       <td style="padding:10px 16px;font-weight:600;${isSelected?'color:var(--big);':''}">${y}${isSelected?' ◀':''}</td>
       <td style="padding:10px 12px;text-align:right;${fontW}color:var(--big);border-left:2px solid var(--big-light);">${fmt(dd.big.cust[i])}</td>
       <td style="padding:10px 12px;text-align:right;font-size:12px;${fontW}">$${dd.big.rev[i]}M</td>
@@ -835,20 +880,46 @@ function renderSim() {
   }).join('');
 }
 
+
+// ===== 스티키 네비게이션 =====
+function navTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.getElementById('main-nav').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+  window.scrollTo({ top, behavior: 'smooth' });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+// 스크롤 시 active nav 자동 업데이트
+const _navSections = ['sec-sim','sec-overview','sec-health','sec-order','sec-concentration','sec-churn','sec-bigbuyer','sec-top50','sec-methodology'];
+window.addEventListener('scroll', () => {
+  const navH = document.getElementById('main-nav')?.offsetHeight || 44;
+  let current = _navSections[0];
+  _navSections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= navH + 20) current = id;
+  });
+  document.querySelectorAll('.nav-btn').forEach((b, i) => {
+    b.classList.toggle('active', _navSections[i] === current);
+  });
+}, { passive: true });
+
 // 초기화 — DOM 완전 로드 후 한 번만 실행
 document.addEventListener('DOMContentLoaded', function() {
   currentBig   = 1000000;
   currentSmall = 50000;
-  currentSimYear = 3;
+  currentSimYear = 4;
   // 버튼 active 상태 설정
   Object.entries(SIM_BIG_BTN_MAP).forEach(([k,id]) =>
     document.getElementById(id).classList.toggle('active', +k===1000000));
   Object.entries(SIM_SML_BTN_MAP).forEach(([k,id]) =>
     document.getElementById(id).classList.toggle('active', +k===50000));
-  document.getElementById('sybtn-3').classList.add('active');
+  document.getElementById('sybtn-4').classList.add('active');
   renderSim();
 });
 </script>
+<div id="sec-methodology"></div>
 <!-- PAGE 2 -->
 <div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
 
@@ -895,9 +966,9 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
       <table style="width:100%;font-size:12px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">1,006명</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--big);">~61%</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$2,022,962</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2025)</td><td style="padding:7px 0;text-align:right;font-weight:500;">802명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--big);">~50%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$700,998</td></tr>
         <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">508.1회/년</td></tr>
         <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$1,218</td></tr>
       </table>
@@ -917,9 +988,9 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
       <table style="width:100%;font-size:12px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">13,159명</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--mid);">~26%</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$65,259</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2025)</td><td style="padding:7px 0;text-align:right;font-weight:500;">11,150명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--mid);">~29%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$28,978</td></tr>
         <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">35.2회/년</td></tr>
         <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$704</td></tr>
       </table>
@@ -939,9 +1010,9 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
       <table style="width:100%;font-size:12px;border-collapse:collapse;">
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2024)</td><td style="padding:7px 0;text-align:right;font-weight:500;">120,647명</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--small);">~13%</td></tr>
-        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$3,744</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객 수 (2025)</td><td style="padding:7px 0;text-align:right;font-weight:500;">110,903명</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">매출 비중</td><td style="padding:7px 0;text-align:right;font-weight:500;color:var(--small);">~22%</td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">고객당 연간 지출</td><td style="padding:7px 0;text-align:right;font-weight:500;">$2,227</td></tr>
         <tr style="border-bottom:1px solid var(--border);"><td style="padding:7px 0;color:var(--text-secondary);">연간 주문 빈도</td><td style="padding:7px 0;text-align:right;font-weight:500;">4.8회/년</td></tr>
         <tr><td style="padding:7px 0;color:var(--text-secondary);">평균 주문액(AOV)</td><td style="padding:7px 0;text-align:right;font-weight:500;">$392</td></tr>
       </table>
@@ -1226,6 +1297,7 @@ new Chart('c-small-seasonal', {
 });
 </script>
 
+<div id="sec-bigbuyer"></div>
 <!-- PAGE 4: Big Buyer Company Intelligence -->
 <div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
 
@@ -1236,7 +1308,8 @@ new Chart('c-small-seasonal', {
     </div>
   </div>
 
-  <!-- Scorecards -->
+
+<!-- Scorecards -->
   <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px;">
     <div class="scorecard">
       <div class="sc-label">Big Buyer 전체 시장 (2024)</div>
@@ -1245,8 +1318,8 @@ new Chart('c-small-seasonal', {
     </div>
     <div class="scorecard">
       <div class="sc-label">Top 20 — 전체 Wholesale 시장 비중</div>
-      <div class="sc-val" style="color:var(--big);">33.5%<span class="sc-badge" style="background:var(--big-light);color:var(--big);">2024</span></div>
-      <div class="sc-sub">2021년 27.6% → 꾸준히 상승 중</div>
+      <div class="sc-val" style="color:var(--big);">33.9%<span class="sc-badge" style="background:var(--big-light);color:var(--big);">2024</span></div>
+      <div class="sc-sub">2021년 28.1% → 꾸준히 상승 중</div>
     </div>
     <div class="scorecard">
       <div class="sc-label">Top 1 고객사 (5년 합산)</div>
@@ -1274,32 +1347,32 @@ new Chart('c-small-seasonal', {
     <div style="display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:10px;margin-top:12px;">
       <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
         <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2021</div>
-        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">27.6%</div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">$737M / $2,672M</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">28.1%</div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px;">$750M / $2,671M</div>
       </div>
       <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
         <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2022</div>
-        <div style="font-size:22px;font-weight:700;color:var(--big);">31.1%</div>
-        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 3.5pp</div>
-        <div style="font-size:10px;color:var(--text-tertiary);">$939M / $3,018M</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">31.6%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 3.6pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$955M / $3,020M</div>
       </div>
       <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
         <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2023</div>
-        <div style="font-size:22px;font-weight:700;color:var(--big);">31.6%</div>
-        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 0.5pp</div>
-        <div style="font-size:10px;color:var(--text-tertiary);">$1,006M / $3,184M</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">32.1%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 0.4pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,020M / $3,183M</div>
       </div>
       <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;border:1.5px solid var(--big);">
         <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2024</div>
-        <div style="font-size:22px;font-weight:700;color:var(--big);">33.5%</div>
-        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 1.9pp</div>
-        <div style="font-size:10px;color:var(--text-tertiary);">$1,120M / $3,345M</div>
+        <div style="font-size:22px;font-weight:700;color:var(--big);">33.9%</div>
+        <div style="font-size:11px;color:var(--mid);margin-top:2px;">▲ 1.8pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,133M / $3,343M</div>
       </div>
       <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:14px 16px;">
         <div style="font-size:10px;color:var(--text-tertiary);margin-bottom:4px;">2025</div>
-        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">32.6%</div>
-        <div style="font-size:11px;color:var(--small);margin-top:2px;">▼ 0.9pp</div>
-        <div style="font-size:10px;color:var(--text-tertiary);">$1,033M / $3,164M</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text-primary);">32.9%</div>
+        <div style="font-size:11px;color:var(--small);margin-top:2px;">▼ 1.0pp</div>
+        <div style="font-size:10px;color:var(--text-tertiary);">$1,043M / $3,168M</div>
       </div>
     </div>
   </div>
@@ -1317,12 +1390,12 @@ new Chart('c-small-seasonal', {
     <div class="charts-grid">
       <div class="chart-card chart-full">
         <div class="chart-title">Top 10 고객사 Market Share 추이 (%)</div>
-        <div class="chart-desc">Big Buyer 전체 매출 대비 각 고객사 비중 · 2021→2025</div>
+        <div class="chart-desc">전체 Wholesale 시장 대비 각 고객사 비중 · 2021→2025</div>
         <div class="canvas-wrap" style="height:300px"><canvas id="c-p3-share"></canvas></div>
       </div>
       <div class="chart-card">
         <div class="chart-title">2025년 Top 20 Market Share</div>
-        <div class="chart-desc">2025년 기준 Big Buyer 내 점유율</div>
+        <div class="chart-desc">2025년 기준 전체 Wholesale 시장 내 점유율</div>
         <div class="canvas-wrap" style="height:340px"><canvas id="c-p3-share25"></canvas></div>
       </div>
       <div class="chart-card">
@@ -1403,28 +1476,31 @@ new Chart('c-small-seasonal', {
 <script>
 // ===== PAGE 3 DATA =====
 const P3_YEARS = ['2021','2022','2023','2024','2025'];
-const P3_MARKET = { rev: [510.1,529.5,564.5,605.4,562.2], orders: [362168,444998,488120,490788,425548] };
+// P3_MARKET: 전체 Wholesale 시장 기준 (Big+Mid+Small 전체)
+// rev는 전체 시장 매출, orders는 전체 주문 수 — Top20 비중 카드의 분모와 일치
+const P3_MARKET = { rev: [2671, 3020, 3183, 3343, 3168], orders: [1424325,1458311,1542070,1565154,1458557] };
+// P3_CUSTOMERS: P4 Top50 기준으로 통일된 매출 데이터 (전 Tier 합산)
 const P3_CUSTOMERS = {
-  "ALTAR'D STATE": { rev: [108.004,223.255,231.951,286.829,259.393], ord: [4082,11136,11324,13345,12584] },
-  'LULUS':         { rev: [88.923,172.311,146.792,121.998,94.134],   ord: [13257,21313,20083,16305,11695] },
-  'STITCH FIX':    { rev: [87.844,99.035,100.344,105.34,85.124],     ord: [18506,24745,23406,24193,21934] },
-  'RAINBOW':       { rev: [115.209,84.578,57.785,44.987,52.539],     ord: [4389,2759,2304,1831,1611] },
-  'FASHION NOVA':  { rev: [97.731,79.462,61.726,44.602,33.524],      ord: [9227,8611,6985,6892,5363] },
-  'VICI':          { rev: [47.353,64.406,48.478,34.116,43.419],      ord: [5094,5021,5122,4524,5364] },
-  'FRECKLED POPPY':{ rev: [27.749,31.896,69.516,56.124,45.276],      ord: [1779,3020,3764,1903,3118] },
-  'ROSS STORES':   { rev: [52.987,39.301,23.172,26.781,36.177],      ord: [2123,1397,1311,1176,1188] },
-  'TJ MAXX':       { rev: [25.096,17.984,26.981,56.473,47.228],      ord: [2063,1634,2383,4076,3375] },
-  "DILLARD'S":     { rev: [13.574,21.758,28.491,39.142,57.086],      ord: [1453,3076,2887,2340,3836] },
-  'BUCKLE':        { rev: [4.785,6.405,46.067,45.569,20.871],        ord: [330,543,1780,2330,1431] },
-  'DAILY LOOK':    { rev: [7.255,21.207,25.977,32.331,28.808],       ord: [1354,2055,3040,3939,2545] },
-  'WINDSOR':       { rev: [14.169,13.487,23.946,37.702,25.622],      ord: [2400,2215,3020,4030,2740] },
-  "FRANCESCA'S":   { rev: [28.823,28.299,26.625,16.145,1.212],       ord: [1207,1724,1766,1005,70] },
-  'TUCKERNUCK':    { rev: [1.47,3.003,5.924,40.504,45.826],          ord: [100,270,288,462,484] },
-  'MOCO BOUTIQUE': { rev: [3.111,5.831,27.362,35.543,23.945],        ord: [506,727,1331,1197,1212] },
-  'MAURICES':      { rev: [0,6.392,10.839,39.714,37.192],            ord: [0,180,162,598,492] },
-  'AVARA':         { rev: [3.531,7.757,12.212,19.316,37.253],        ord: [2196,2454,2259,3831,4302] },
-  'BOHME':         { rev: [2.819,3.203,14.681,15.711,39.118],        ord: [247,448,1109,1082,2081] },
-  "BLOOMINGDALE'S":{ rev: [6.725,9.8,17.032,21.022,18.923],          ord: [6601,5540,7960,8241,9490] },
+  "ALTAR'D STATE": { rev: [108.0,223.2,231.9,286.8,259.4], ord: [4082,11136,11324,13345,12584] },
+  'LULUS':         { rev: [95.3,184.9,157.5,130.6,100.8],  ord: [13257,21313,20083,16305,11695] },
+  'STITCH FIX':    { rev: [87.8,99.0,100.3,105.3,85.1],    ord: [18506,24745,23406,24193,21934] },
+  'RAINBOW':       { rev: [115.2,84.6,57.8,45.0,52.5],     ord: [4389,2759,2304,1831,1611] },
+  'FASHION NOVA':  { rev: [97.7,79.5,61.7,44.6,33.5],      ord: [9227,8611,6985,6892,5363] },
+  'VICI':          { rev: [47.4,64.4,48.5,34.1,43.4],      ord: [5094,5021,5122,4524,5364] },
+  'FRECKLED POPPY':{ rev: [27.8,31.9,69.5,56.1,45.3],      ord: [1779,3020,3764,1903,3118] },
+  'ROSS STORES':   { rev: [60.7,43.7,27.9,32.6,39.8],      ord: [2123,1397,1311,1176,1188] },
+  'TJ MAXX':       { rev: [25.1,18.0,27.0,56.5,47.2],      ord: [2063,1634,2383,4076,3375] },
+  "DILLARD'S":     { rev: [13.6,21.8,28.5,39.1,57.1],      ord: [1453,3076,2887,2340,3836] },
+  'BUCKLE':        { rev: [4.8,6.4,46.1,45.6,20.9],        ord: [330,543,1780,2330,1431] },
+  'DAILY LOOK':    { rev: [7.2,21.2,26.0,32.3,28.8],       ord: [1354,2055,3040,3939,2545] },
+  'WINDSOR':       { rev: [14.2,13.5,23.9,37.7,25.6],      ord: [2400,2215,3020,4030,2740] },
+  "FRANCESCA'S":   { rev: [27.2,27.1,25.6,15.2,1.2],       ord: [1207,1724,1766,1005,70] },
+  'TUCKERNUCK':    { rev: [1.5,3.0,5.9,40.5,45.8],         ord: [100,270,288,462,484] },
+  'MOCO BOUTIQUE': { rev: [3.1,5.8,27.4,35.5,23.9],        ord: [506,727,1331,1197,1212] },
+  'MAURICES':      { rev: [0.0,6.4,10.8,39.7,37.2],        ord: [0,180,162,598,492] },
+  'AVARA':         { rev: [3.5,7.8,12.2,19.3,37.2],        ord: [2196,2454,2259,3831,4302] },
+  'BOHME':         { rev: [2.8,3.2,14.7,15.7,39.1],        ord: [247,448,1109,1082,2081] },
+  "BLOOMINGDALE'S":{ rev: [6.7,9.8,17.0,21.0,18.9],        ord: [6601,5540,7960,8241,9490] },
 };
 
 const P3_NAMES = Object.keys(P3_CUSTOMERS);
@@ -1604,6 +1680,7 @@ document.getElementById('p3-rank-year').addEventListener('change', e => buildP3R
 buildP3Ranking(0);
 </script>
 
+<div id="sec-top50"></div>
 <!-- PAGE 5: Top 50 Big Buyer 고객사 분석 -->
 <div style="page-break-before:always; margin-top:60px; border-top:2px solid var(--border); padding-top:48px;">
 
@@ -1623,13 +1700,12 @@ buildP3Ranking(0);
       </select>
     </div>
   </div>
-
-  <!-- Scorecards -->
+<!-- Scorecards -->
   <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px;">
     <div class="scorecard">
       <div class="sc-label">Top 50 5년 합산</div>
-      <div class="sc-val" style="color:var(--big);">$7.2B</div>
-      <div class="sc-sub">Big Buyer 시장의 약 40%</div>
+      <div class="sc-val" style="color:var(--big);">$5.8B</div>
+      <div class="sc-sub">전체 시장의 연평균 ~38% · 5년 합산</div>
     </div>
     <div class="scorecard">
       <div class="sc-label">최고 성장 (절대액)</div>
@@ -1645,6 +1721,41 @@ buildP3Ranking(0);
       <div class="sc-label">최대 감소</div>
       <div class="sc-val" style="color:var(--small);">RAINBOW</div>
       <div class="sc-sub">$115.2M → $52.5M (-54%)</div>
+    </div>
+  </div>
+
+  <!-- Top50 Market Share 섹션 -->
+  <div class="section-divider">Top 50 Market Share — 전체 시장 기준</div>
+
+  <div class="charts-grid" style="margin-bottom:20px;">
+    <div class="chart-card chart-full">
+      <div class="chart-title">Top 50 고객사 연도별 Market Share 추이 (%)</div>
+      <div class="chart-desc">전체 Wholesale 시장 대비 Top 50 매출 비중 · 2021→2025 · 상위 15사 개별 표시</div>
+      <div class="canvas-wrap" style="height:300px"><canvas id="c-p4-share-line"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">2025년 Top 50 Market Share 분포</div>
+      <div class="chart-desc">전체 시장 $3,168M 대비 · 1% 이상 14개사 개별 표시 · 1% 미만 36개사는 "기타 Top50"로 묶음 · 호버로 상세 확인</div>
+      <div class="canvas-wrap" style="height:340px"><canvas id="c-p4-share25"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 20 vs Top 21-50 vs 나머지 시장 (%)</div>
+      <div class="chart-desc">Top 21-50 30개사 합산이 5~6% — Top 20과의 차이가 크지 않음. 상위 집중도가 매우 높은 구조</div>
+      <div class="canvas-wrap" style="height:340px"><canvas id="c-p4-share-total"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 집중도 인사이트 -->
+  <div style="background:var(--big-light);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
+    <div style="font-size:18px;flex-shrink:0;">💡</div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--big);margin-bottom:4px;">집중도 인사이트 — Top 20이 사실상 전부</div>
+      <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+        Top 21~50위 고객사 <strong>30개사</strong>를 다 합쳐도 전체 시장의 <strong>5~6%</strong>에 불과합니다.
+        Top 20 단독 비중(28~34%)과 비교하면 차이가 거의 없는 수준으로,
+        사실상 <strong>시장 내 구매력은 상위 20개사에 극도로 집중</strong>되어 있습니다.
+        21~50위 30개사 평균 연간 매출이 $5~6M 수준인 반면, Top 20 평균은 $50M+입니다.
+      </div>
     </div>
   </div>
 
@@ -1789,6 +1900,129 @@ function buildP4Table(sortKey='total') {
 
 document.getElementById('p4-sort').addEventListener('change', e => buildP4Table(e.target.value));
 buildP4Table();
+
+// ===== Top50 Market Share 차트 =====
+const P4_MARKET = [2671, 3020, 3183, 3343, 3168];  // 전체 시장 연도별 ($M)
+const P4_YEARS  = ['2021','2022','2023','2024','2025'];
+const P4_COLORS_FULL = [
+  '#534AB7','#1D9E75','#D85A30','#BA7517','#185FA5',
+  '#993556','#3B6D11','#A32D2D','#0F6E56','#854F0B',
+  '#7F77DD','#5DCAA5','#F0997B','#EF9F27','#85B7EB',
+  '#ED93B1','#97C459','#F09595','#88C8E8','#888780',
+];
+
+// 상위 15사 개별 Market Share 라인 차트
+const top15_p4 = P4_DATA.slice(0, 15);
+new Chart('c-p4-share-line', {
+  type: 'line',
+  data: {
+    labels: P4_YEARS,
+    datasets: top15_p4.map((d, i) => ({
+      label: d.name,
+      data: P4_YEARS.map((_, yi) => +(d.rev[yi] / P4_MARKET[yi] * 100).toFixed(2)),
+      borderColor: P4_COLORS_FULL[i],
+      backgroundColor: 'transparent',
+      pointBackgroundColor: P4_COLORS_FULL[i],
+      borderWidth: 2, pointRadius: 4, tension: 0.35,
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 10 }, color: '#999' } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y.toFixed(2)}%` } }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => v + '%' } }
+    }
+  }
+});
+
+// 2025년 도넛 차트 — 1% 미만은 "기타 Top50" 하나로 묶기
+const _mkt25 = P4_MARKET[4];
+const _named25 = [], _otherRev25 = [], _otherSum25 = { rev: 0 };
+P4_DATA.forEach(d => {
+  const pct = d.rev[4] / _mkt25 * 100;
+  if (pct >= 1.0) {
+    _named25.push({ name: d.name, pct: +pct.toFixed(2) });
+  } else {
+    _otherRev25.push({ name: d.name, pct: +pct.toFixed(2) });
+    _otherSum25.rev += d.rev[4];
+  }
+});
+const _otherPct25 = +(_otherSum25.rev / _mkt25 * 100).toFixed(2);
+const _restPct25  = +(100 - _named25.reduce((s,d)=>s+d.pct,0) - _otherPct25).toFixed(2);
+const _otherTooltip = _otherRev25.map(d => `${d.name} ${d.pct}%`).join(' / ');
+
+new Chart('c-p4-share25', {
+  type: 'doughnut',
+  data: {
+    labels: [..._named25.map(d=>d.name), `기타 Top50 (${_otherRev25.length}개사)`, '나머지 시장'],
+    datasets: [{
+      data: [..._named25.map(d=>d.pct), _otherPct25, _restPct25 > 0 ? _restPct25 : 0],
+      backgroundColor: [
+        ...P4_COLORS_FULL.slice(0, _named25.length),
+        '#C8C6BC',   // 기타 Top50 — 회색
+        '#ECEAE4',   // 나머지 시장 — 연한 회색
+      ],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '52%',
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: c => {
+            if (c.label.startsWith('기타 Top50')) {
+              return [` 기타 Top50: ${c.parsed.toFixed(2)}%`, ` (${_otherTooltip})`];
+            }
+            return ` ${c.label}: ${c.parsed.toFixed(2)}%`;
+          }
+        }
+      }
+    }
+  }
+});
+
+// Top20 vs Top21-50 vs 나머지 스택 바
+const _top20pct = P4_YEARS.map((_, yi) => {
+  const t = P4_DATA.slice(0, 20).reduce((s, d) => s + d.rev[yi], 0);
+  return +(t / P4_MARKET[yi] * 100).toFixed(1);
+});
+const _top21_50pct = P4_YEARS.map((_, yi) => {
+  const t = P4_DATA.slice(20).reduce((s, d) => s + d.rev[yi], 0);
+  return +(t / P4_MARKET[yi] * 100).toFixed(1);
+});
+const _restPct = P4_YEARS.map((_, yi) => {
+  const top50 = P4_DATA.reduce((s, d) => s + d.rev[yi], 0);
+  return +(Math.max(0, P4_MARKET[yi] - top50) / P4_MARKET[yi] * 100).toFixed(1);
+});
+
+new Chart('c-p4-share-total', {
+  type: 'bar',
+  data: {
+    labels: P4_YEARS,
+    datasets: [
+      { label: 'Top 20',      data: _top20pct,   backgroundColor: '#534AB7', borderRadius: 3, stack: 's' },
+      { label: 'Top 21–50',   data: _top21_50pct, backgroundColor: '#AFA9EC', borderRadius: 3, stack: 's' },
+      { label: '나머지 시장', data: _restPct,     backgroundColor: '#ECEAE4', borderRadius: 3, stack: 's' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { boxWidth: 10, font: { size: 11 }, color: '#999' } },
+      tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.parsed.y.toFixed(1)}%` } }
+    },
+    scales: {
+      x: { stacked: true, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 } } },
+      y: { stacked: true, max: 100, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#999', font: { size: 11 }, callback: v => v + '%' } }
+    }
+  }
+});
 </script>
 
 <!-- PAGE 6: 채널 Market Share 트렌드 -->
